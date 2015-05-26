@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">OurWallet</string>
+
+    <string name="main_title">My Lists</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_edit_shop_list">Edit Shop List</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_show_shop_list">Shop List</string>
+
+    <string name="main_help_date_owner">Date &amp; Owner</string>
+    <string name="main_help_amount">Amount</string>
+    <string name="main_help_users">Users</string>
+    <string name="main_help_ispaid">Paid</string>
+
+    <!-- dialog string -->
+    <string name="dialog_qty">Quantity</string>
+    <string name="dialog_user_qty">N. Users</string>
+    <string name="add_user">Add User</string>
+    <string name="edit_user">Edit User</string>
+    <string name="add_item">Add Item</string>
+    <string name="edit_item">Edit Item</string>
+    <string name="void_user">User must have valid name</string>
+    <string name="void_item">Item must have valid name and price</string>
+    <string name="void_price">Item must have price</string>
+    <string name="void_amount">Shop list must have valid amount</string>
+    <string name="void_shop_list">Shop list must have owner and amount</string>
+
+    <string name="item_name">Items</string>
+    <string name="common">ALL</string>
+    <string name="personal">User Total</string>
+    <string name="euro">€</string>
+    <string name="each">each</string>
+    <string name="date">Date</string>
+    <string name="owner">Owner</string>
+
+    <string name="confirm">Set</string>
+    <string name="cancel">Back</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_save">Save</string>
+    <string name="action_add_user">Add User</string>
+    <string name="action_add_item">Add Item</string>
+    <string name="action_edit">Edit</string>
+
+    <string name="date_pattern">yyyy/MM/dd HH:mm</string>
+    <string name="cab_title">Select Items</string>
+    <string name="cab_subtitle">items selected</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="paid">Paid</string>
+    <string name="shoplist_save_done">Shoplist saved correctly</string>
+    <string name="position_save_error">Error ocurred during saving</string>
+    <string name="loading">Loading...</string>
+</resources>

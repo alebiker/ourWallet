@@ -1,0 +1,46 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin_land">6dp</dimen>
+    <dimen name="title_size">35sp</dimen>
+    <dimen name="main_info_size">20sp</dimen>
+    <dimen name="shop_list_margin">4dp</dimen>
+    <dimen name="dialog_title_text_size">25sp</dimen>
+    <dimen name="dialog_info_text_size">16sp</dimen>
+
+    <dimen name="edit_shop_info">25sp</dimen>
+    <dimen name="edit_common_info">25sp</dimen>
+    <dimen name="edit_summary_info">25sp</dimen>
+
+    <dimen name="table_info_col_size">100dp</dimen>
+    <dimen name="edit_table_user_col_size">80dp</dimen>
+    <dimen name="table_item_col_width">100dp</dimen>
+
+    <dimen name="table_header_text_size">20sp</dimen>
+    <dimen name="table_item_text_size">20sp</dimen>
+    <dimen name="table_footer_text_size">20sp</dimen>
+
+
+    <dimen name="table_user_col_size">80dp</dimen>
+
+    <dimen name="padding_number_picker">2dp</dimen>
+    <dimen name="margin_number_picker">4dp</dimen>
+
+    <dimen name="xxsmall">5sp</dimen>
+    <dimen name="xsmall">8sp</dimen>
+    <dimen name="small">10sp</dimen>
+    <dimen name="medium">13sp</dimen>
+    <dimen name="large">15sp</dimen>
+    <dimen name="xlarge">20sp</dimen>
+    <dimen name="xxlarge">25sp</dimen>
+
+    <dimen name="margin_small">2dp</dimen>
+    <dimen name="margin_medium">4dp</dimen>
+    <dimen name="padding_small">2dp</dimen>
+    <dimen name="padding_medium">4dp</dimen>
+    <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp:
+         https://developer.android.com/design/patterns/navigation-drawer.html -->
+    <dimen name="navigation_drawer_width">240dp</dimen>
+
+</resources>

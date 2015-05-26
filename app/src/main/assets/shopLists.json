@@ -1,0 +1,22 @@
+{
+"shopListsHeader": [
+	{
+		"id": "1",
+		"file": "file1",
+		"date": "2015/03/26 18:54",
+		"amount": "30.77",
+		"owner": "Alessandro",
+		"users": ["Alessandro","Luca","Andrea"],
+		"isPaid": false
+	},
+	{
+		"id": "2",
+		"file": "file2",
+		"date": "2013/03/15 14:55",
+		"amount": "10.77",
+		"owner": "Francesco",
+		"users": ["Francesco","Alessandro","Luca","Andrea"],
+		"isPaid": true
+	}
+]
+}

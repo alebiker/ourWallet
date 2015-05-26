@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="it.abapp.mobile.shoppingtogether"
+    >
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppBaseTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".EditShopList"
+            android:label="@string/title_activity_edit_shop_list"
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="adjustNothing">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="it.abapp.mobile.shoppingtogether.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ShowShopList"
+            android:label="@string/title_activity_show_shop_list"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="it.abapp.mobile.shoppingtogether.MainActivity" />
+        </activity>
+    </application>
+
+</manifest>

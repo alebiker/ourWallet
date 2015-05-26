@@ -1,0 +1,139 @@
+<RelativeLayout
+    android:id="@+id/main_root"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/main_info_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_medium"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/app_name"
+            android:textSize="@dimen/title_size"
+            android:textStyle="bold"
+            android:textColor="@color/material_deep_teal_500"/>
+        <!--
+        <TextView
+            android:id="@+id/totalCreditCash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_alignParentLeft="true"
+            android:text="€Credit"
+            android:textSize="@dimen/main_info_size"
+            android:textColor="@android:color/holo_green_light"/>
+        <TextView
+            android:id="@+id/totalDebitCash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/totalCreditCash"
+            android:layout_alignParentLeft="true"
+            android:text="€Debit"
+            android:textSize="@dimen/main_info_size"
+            android:textColor="@android:color/holo_red_light"/>
+        <TextView
+            android:id="@+id/totalOwnerList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_alignParentRight="true"
+            android:text="N owner list"
+            android:textSize="@dimen/main_info_size"/>
+        <TextView
+            android:id="@+id/totalDebitList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/totalOwnerList"
+            android:layout_alignParentRight="true"
+            android:text="N debit list"
+            android:textSize="@dimen/main_info_size"/>
+        -->
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/button_new_shop_list"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_margin="@dimen/margin_medium"
+        android:text="New shop list"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        style="@style/MyButton"
+        />
+
+    <LinearLayout
+        android:id="@+id/listView_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_medium"
+        android:layout_below="@id/main_info_summary"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/shop_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_below="@+id/shop_id"
+            android:gravity="left"
+            android:textSize="@dimen/small"
+            android:text="@string/main_help_date_owner"
+            />
+
+        <TextView
+            android:id="@+id/shop_amount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:textSize="@dimen/small"
+            android:text="@string/main_help_amount"/>
+
+        <TextView
+            android:id="@+id/shop_people"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:textSize="@dimen/small"
+            android:text="@string/main_help_users"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:textSize="@dimen/small"
+            android:text="@string/main_help_ispaid"
+            />
+
+    </LinearLayout>
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_medium"
+        android:layout_below="@id/listView_header"
+        android:layout_above="@id/button_new_shop_list"
+        android:layout_centerHorizontal="true"
+        android:choiceMode="multipleChoiceModal"
+        android:animateLayoutChanges="true"/>
+
+</RelativeLayout>

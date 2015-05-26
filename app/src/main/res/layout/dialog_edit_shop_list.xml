@@ -1,0 +1,99 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    >
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:scaleType="center"
+        android:background="#FFFFBB33"
+        android:textSize="@dimen/dialog_title_text_size"
+        android:gravity="center"
+        android:text="Set the main info"
+        android:textStyle="bold"
+        />
+
+
+    <EditText
+        android:id="@+id/dialog_owner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:hint="Owner"
+        android:textSize="@dimen/dialog_info_text_size"
+        android:text="By Malnati"
+        />
+
+    <EditText
+        android:id="@+id/dialog_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:hint="Amount"
+        android:textSize="@dimen/dialog_info_text_size"
+        android:text="54.13"
+        android:fontFamily="sans-serif"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="4dp"
+            android:gravity="center"
+            android:textSize="@dimen/dialog_info_text_size"
+            android:text="@string/dialog_user_qty"
+            android:fontFamily="sans-serif"
+            />
+
+        <NumberPicker
+        android:id="@+id/dialog_n_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+            android:layout_gravity="center"
+        />
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+        <TimePicker
+            android:id="@+id/dialog_time_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+
+            </TimePicker>
+        </LinearLayout>
+    </LinearLayout>
+    <CalendarView
+        android:id="@+id/dialog_calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal" />
+
+
+</LinearLayout>

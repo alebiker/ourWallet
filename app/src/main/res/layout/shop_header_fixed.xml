@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/small"
+            android:textStyle="bold"
+            android:text="@string/date"
+            android:onClick="showEditShopDialog"
+            android:clickable="true"
+            />
+
+        <TextView
+            android:id="@+id/shop_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="@dimen/small"
+            android:text="--/--/-- --:--"
+            android:onClick="showEditShopDialog"
+            android:clickable="true"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/small"
+            android:textStyle="bold"
+            android:text="@string/owner"
+            android:onClick="showEditShopDialog"
+            android:clickable="true"
+            />
+
+        <TextView
+        android:id="@+id/shop_owner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="@dimen/small"
+        android:singleLine="true"
+        android:text="\??"
+        android:onClick="showEditShopDialog"
+        android:clickable="true"
+            />
+    </LinearLayout>
+</merge>

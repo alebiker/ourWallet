@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_medium"
+     >
+
+    <LinearLayout
+        android:id="@+id/edit_common_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:textSize="@dimen/small"
+            android:text="Common"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+
+            <TextView
+                android:id="@+id/edit_amount_common"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:inputType="numberDecimal"
+                android:textSize="@dimen/small"
+                android:text="€ --"/>
+            <TextView
+                android:id="@+id/edit_amount_common_single"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:gravity="center"
+                android:inputType="numberDecimal"
+                android:textSize="@dimen/xsmall"
+                android:text="(each --)"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/edit_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edit_common_summary"
+        android:gravity="center"
+        >
+        <!--
+               <TextView
+                   android:id="@+id/edit_cash_in"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="1"
+                   android:inputType="numberDecimal"
+                   android:textSize="@dimen/edit_summary_info"
+                   android:text="44.5"/>
+               <TextView
+                   android:id="@+id/edit_cash_out"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="1"
+                   android:inputType="numberDecimal"
+                   android:textSize="@dimen/edit_summary_info"
+                   android:text="15.5"/>
+                   -->
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:textSize="@dimen/medium"
+            android:text="Total"/>
+        <TextView
+            android:id="@+id/amount_total"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:inputType="numberDecimal"
+            android:textSize="@dimen/medium"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_red_light"
+            android:text="€ --"/>
+
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/list_item"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/view_selected"
+    android:gravity="center"
+    >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_margin="@dimen/shop_list_margin"
+            android:duplicateParentState="true">
+            <TextView
+                android:id="@+id/shop_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/shop_id"
+                android:singleLine="true"
+                android:textSize="@dimen/small"
+                android:text="2015/05/3"
+                />
+            <TextView
+                android:id="@+id/shop_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="by Alessandro"
+                android:textSize="10sp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:duplicateParentState="true">
+            <TextView
+                android:id="@+id/shop_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/medium"
+                android:textColor="@android:color/holo_red_light"
+                android:text="€30"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/shop_people"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="Alessandro, Luca, Andrea"
+            />
+
+        <ImageView
+            android:id="@+id/shop_isPaid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_small"
+            android:src="@drawable/checkmark"
+            />
+
+
+        <!--
+         <CheckBox
+            android:id="@+id/shop_isPaid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:enabled="false"
+            android:clickable="false"
+             android:longClickable="false"
+            />
+        -->
+
+</LinearLayout>

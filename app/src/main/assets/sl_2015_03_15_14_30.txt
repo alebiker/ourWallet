@@ -1,0 +1,46 @@
+{
+"shopList":
+	{
+		"id": "1",
+		"date": "2015/03/26",
+		"amount": "30.77",
+		"owner": "Alessandro",
+		"users": [
+			{
+				"name" : "Alessandro",
+				"items" : [
+					{
+						"id" : "item1",
+						"qty" : "2"
+					},
+					{
+						"id" : "item2",
+						"qty" : "1"
+					}
+				]
+			},
+			{
+				"name" : "Francesco",
+				"items" : [
+					{
+						"id" : "item1",
+						"qty" : "1"
+					}
+				]
+			}
+		],
+		"items": [
+			{
+				"id" : "item1",
+				"mul" : "3",
+				"price" : "12.2",
+			},
+			{		
+				"id" : "item2",
+				"mul" : "1",
+				"price" : "3.3",
+			}
+		],
+		"isPaid": false
+	}
+}

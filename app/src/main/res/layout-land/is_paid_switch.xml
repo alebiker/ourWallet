@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+        
+    <TextView android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginRight="@dimen/margin_medium"
+        android:layout_centerVertical="true"
+        android:text="@string/paid"
+        android:textStyle="bold"
+        android:textSize="@dimen/small"
+
+        />
+    <CheckBox
+        android:id="@+id/shop_isPaid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:textOn="YES"
+        android:textOff="NO"
+        android:textSize="@dimen/medium"
+        />
+    <!--
+    <Switch
+        android:id="@+id/shop_isPaid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:textSize="@dimen/xsmall"
+        android:textOff="NO"
+        android:textOn="YES"/>
+        -->
+</RelativeLayout>
