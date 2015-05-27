@@ -3,11 +3,15 @@ package it.abapp.mobile.shoppingtogether;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,15 +29,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
+//TODO check the availability of the camera for aquisition
 
 public class EditShopList extends ActionBarActivity {
 
     static final int SELECT_MAIN_INFO_REQUEST = 1;
+    static final int REQUEST_TAKE_PHOTO = 1;
 
     private ShopList sl;
     private TableLayout table;
@@ -42,6 +51,8 @@ public class EditShopList extends ActionBarActivity {
     private boolean row_column;
     private boolean new_edit = true;
     private ViewGroup header;
+    private String mCurrentPhotoPath;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +118,9 @@ public class EditShopList extends ActionBarActivity {
             case R.id.action_add_item:
                 showItemDialog();
                 return true;
+            case R.id.action_take_photo:
+                dispatchTakePictureIntent();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -156,6 +170,24 @@ public class EditShopList extends ActionBarActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable("shopList", sl);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+            //Bundle extras = data.getExtras();
+            //Bitmap imageBitmap = (Bitmap) extras.get("data");
+            ocrProcessing(mCurrentPhotoPath);
+        }
+    }
+
+    private void ocrProcessing(String photoPath) {
+        OCR ocr = OCR.newInstance();
+        ocr.setImage(photoPath);
+        ocr.process();
+        List<String> names = ocr.getNames();
+        for (String s : names)
+            Log.i("price",s);
     }
 
     public void showShopList(){
@@ -596,6 +628,29 @@ public class EditShopList extends ActionBarActivity {
         // Create and show the dialog.
         DialogEditItemShopListFragment newFragment = DialogEditItemShopListFragment.newInstance(null);
         newFragment.show(fm, "dialog");
+    }
+
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = Utils.createImageFile();
+                mCurrentPhotoPath = photoFile.getAbsolutePath();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        Uri.fromFile(photoFile));
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
+        }
     }
 
     private ArrayList<View> getAllChildren(View v) {

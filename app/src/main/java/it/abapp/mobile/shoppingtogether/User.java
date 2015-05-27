@@ -13,7 +13,6 @@ import java.util.HashMap;
 public class User implements Serializable{
     public String name;
     public float amount = 0;  // personal amount (common not included)
-    public TessBaseAPI api;
 
     public User(String name) {
         this.name = name;

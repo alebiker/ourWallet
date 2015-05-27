@@ -12,6 +12,10 @@
         android:icon="@drawable/ic_action_add_person"
         android:title="@string/action_add_user"
         app:showAsAction="ifRoom"  />
+    <item android:id="@+id/action_take_photo"
+        android:icon="@android:drawable/ic_menu_camera"
+        android:title="@string/action_scan_w_camera"
+        app:showAsAction="ifRoom"  />
     <item android:id="@+id/action_save"
         android:icon="@drawable/ic_action_save"
         android:title="@string/action_save"
