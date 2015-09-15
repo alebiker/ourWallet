@@ -1,7 +1,9 @@
 package it.abapp.mobile.shoppingtogether;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -188,6 +190,25 @@ public class EditShopList extends ActionBarActivity {
         List<String> names = ocr.getNames();
         for (String s : names)
             Log.i("price",s);
+    }
+
+    @Override
+    public void onBackPressed(){
+        new AlertDialog.Builder(this)
+                .setTitle("Save List")
+                .setMessage("Do you want save before exit?")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        new saveShopAsyncTask().execute();
+                    }})
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        finish();
+                    }
+                }).show();
     }
 
     public void showShopList(){
@@ -631,6 +652,7 @@ public class EditShopList extends ActionBarActivity {
     }
 
 
+
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -693,17 +715,21 @@ public class EditShopList extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(Boolean result) {
+            dialog.dismiss();
 
             if (result) {
                 Toast.makeText(EditShopList.this, getString(R.string.shoplist_save_done),
                         Toast.LENGTH_SHORT).show();
 
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra(MainActivity.SHOP_LIST, sl);
+                setResult(RESULT_OK, returnIntent);
+                finish();
+                /*
                 if(!new_edit) {
-                    Intent returnIntent = new Intent();
-                    returnIntent.putExtra("shopList", sl);
 
-                    setResult(RESULT_OK, returnIntent);
-                    finish();
+
+
                 }
                 else {
                     Intent intent = new Intent(getApplicationContext(), ShowShopList.class);
@@ -714,10 +740,13 @@ public class EditShopList extends ActionBarActivity {
 
                     startActivity(intent);
                 }
-
+*/
             } else {
                 Toast.makeText(EditShopList.this, getString(R.string.position_save_error),
                         Toast.LENGTH_SHORT).show();
+
+                setResult(RESULT_CANCELED, null);
+                finish();
             }
             dialog.dismiss();
         }

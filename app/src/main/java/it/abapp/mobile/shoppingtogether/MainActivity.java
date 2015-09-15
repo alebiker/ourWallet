@@ -30,10 +30,13 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
 
+    static final int REQUEST_NEW_SHOP_LIST = 1;
+    public static final String SHOP_LIST = "shop_list";
     ListView listView;
     ShoppingListAdapter adapter;
     List<ShopList> shopList;
     private List<ResolveInfo> mApps;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,15 +124,9 @@ public class MainActivity extends ActionBarActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // create and initialize the intent
-                Intent intent = new Intent(getApplicationContext(), ShowShopList.class);
 
-                Bundle b = new Bundle();
-                // TODO check
-                b.putSerializable("shopList", (ShopList)listView.getItemAtPosition(position));
-                intent.putExtras(b);
-
-                startActivity(intent);
+                ShopList selectedShopList = (ShopList)listView.getItemAtPosition(position);
+                showShopList(selectedShopList);
             }
         });
 
@@ -145,6 +142,18 @@ public class MainActivity extends ActionBarActivity {
 */
 
         addListenerOnButton(rootView);
+    }
+
+    private void showShopList(ShopList selectedShopList) {
+        // create and initialize the intent
+        Intent intent = new Intent(getApplicationContext(), ShowShopList.class);
+
+        Bundle b = new Bundle();
+        // TODO check
+        b.putSerializable("shopList", selectedShopList);
+        intent.putExtras(b);
+
+        startActivity(intent);
     }
 
     @Override
@@ -172,16 +181,24 @@ public class MainActivity extends ActionBarActivity {
                 // TODO instantiate a valid efficient intent with cmd 'NEW SHOP LIST'
                 intent.putExtras(b);
 
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_NEW_SHOP_LIST);
             }
 
         });
 
 
 
-
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_NEW_SHOP_LIST && resultCode == RESULT_OK) {
+            //Bundle extras = data.getExtras();
+            //Bitmap imageBitmap = (Bitmap) extras.get("data");
+            ShopList shopList = (ShopList)data.getSerializableExtra(SHOP_LIST);
+            showShopList(shopList);
+        }
+    }
 
     public class AppsAdapter extends BaseAdapter {
         public AppsAdapter() {
