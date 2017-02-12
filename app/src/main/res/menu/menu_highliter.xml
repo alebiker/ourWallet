@@ -1,0 +1,38 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="it.abapp.mobile.shoppingtogether.ocr.HighliterActivity"
+    >
+
+    <item android:id="@+id/action_pan_mode"
+        android:icon="@drawable/ic_open_with_black_24dp"
+        android:title="@string/action_pan_mode"
+        app:showAsAction="ifRoom"></item>
+    <item android:id="@+id/action_add_item"
+        android:icon="@drawable/ic_action_new"
+        android:title="@string/action_add_region"
+        app:showAsAction="always"  />
+    <item android:id="@+id/action_sel_name"
+        android:icon="@drawable/ic_text_format_black_24dp"
+        android:title="@string/action_sel_name"
+        app:showAsAction="ifRoom"
+        android:visible="false"/>
+    <item android:id="@+id/action_sel_price"
+        android:icon="@drawable/ic_attach_money_black_24dp"
+        android:title="@string/action_sel_price"
+        app:showAsAction="ifRoom"
+        android:visible="false"/>
+    <item android:id="@+id/action_done"
+        android:icon="@drawable/ic_done_black_24dp"
+        android:title="@string/action_done"
+        app:showAsAction="ifRoom"  />
+    <item android:id="@+id/action_detect_text"
+        android:icon="@drawable/ic_find_in_page_black_24dp"
+        android:title="@string/action_detect_text"
+        app:showAsAction="ifRoom"  />
+    <item android:id="@+id/action_start_ocr"
+        android:title="@string/action_start_ocr"
+        app:showAsAction="ifRoom"  />
+
+
+</menu>
