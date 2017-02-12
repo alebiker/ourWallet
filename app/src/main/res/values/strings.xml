@@ -53,4 +53,22 @@
     <string name="position_save_error">Error ocurred during saving</string>
     <string name="loading">Loading...</string>
     <string name="action_scan_w_camera">Aquire by camera</string>
+    <string name="title_activity_highliter">HighliterActivity</string>
+    <string name="action_add_region">Add Region</string>
+    <string name="action_sel_price">Select Price</string>
+    <string name="action_done">Confirm</string>
+    <string name="title_activity_ocr">OCRActivity</string>
+    <string name="ocr_processing_done">OCR processing completed</string>
+    <string name="ocr_processing_error">Error occurs in OCR processing</string>
+    <string name="action_import">Import</string>
+    <string name="action_sel_name">Select Name</string>
+    <string name="ocr_processing_loading">Waiting OCR recognition...</string>
+    <string name="action_pan_mode">Pan Mode</string>
+    <string name="action_start_ocr">OCR</string>
+    <string name="text_detection_processing_loading">Text detection...</string>
+    <string name="action_detect_text">Detect Text</string>
+    <string name="finger_selection_hint">Use your finger to select items</string>
+    <string name="ok">Ok</string>
+    <string name="ocr_activity_bad_input_dialog_til">ERROR</string>
+    <string name="ocr_activity_bad_input_dialog_msg">Cannot start OCR!</string>
 </resources>

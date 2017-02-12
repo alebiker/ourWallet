@@ -1,0 +1,25 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="it.alborile.mobile.ocr">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:supportsRtl="true">
+
+        <service
+            android:name=".service.OcrService"
+            android:enabled="true" >
+            <intent-filter>
+                <action android:name="it.alborile.mobile.ocr.intent.ACTION_OCR" />
+                <action android:name="it.alborile.mobile.textdetect.intent.ACTION_TEXT_DETECTION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
+    </application>
+
+</manifest>

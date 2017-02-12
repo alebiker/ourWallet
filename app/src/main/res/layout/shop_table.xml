@@ -4,18 +4,19 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:layout_margin="@dimen/margin_medium"
-
+    android:fillViewport="true"
     >
 
     <TableLayout
         android:id="@+id/edit_table"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:weightSum="1"
         >
 
         <TableRow
             android:id="@+id/edit_table_header"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
             >
@@ -28,14 +29,24 @@
                 android:text="@string/item_name"
                 android:textSize="@dimen/medium"/>
 <!--
-            <include layout="@layout/table_user_name"/>
-            <include layout="@layout/table_user_name"/>
-            <include layout="@layout/table_user_name"/>
+            <include layout="@layout/table_user_name"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/table_user_col_size"
+                android:layout_weight="0.25"/>
+            <include layout="@layout/table_user_name"
+                android:layout_width="@dimen/table_user_col_size"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"/>
+            <include layout="@layout/table_user_name"
+                android:layout_width="@dimen/table_user_col_size"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"/>
 -->
             <TextView
                 android:id="@+id/common"
                 android:layout_height="wrap_content"
                 android:layout_width="@dimen/table_user_col_size"
+                android:layout_weight="0.25"
                 android:gravity="center|bottom"
                 android:textSize="@dimen/medium"
                 android:text="@string/common"/>
@@ -44,14 +55,14 @@
 
         <ScrollView
             android:id="@+id/horizontal_scroll"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             >
 
             <TableLayout
                 android:id="@+id/edit_table_items"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
                 >
@@ -59,9 +70,8 @@
 
 <!--
                     <include layout="@layout/shop_list_item_entry_row"
-                    android:layout_column="0"/>
+                    />
 -->
-
             </TableLayout>
 
 

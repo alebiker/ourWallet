@@ -7,14 +7,12 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Calendar;
-import java.util.Date;
+import it.abapp.mobile.shoppingtogether.model.ShopListEntry;
 
 /**
  * Created by Alessandro on 13/04/2015.
@@ -64,11 +62,11 @@ public class DialogEditItemShopListFragment extends DialogFragment {
             pickerQty.setMaxValue(999);
 
         }else{
-            viewName.setText(item.name);
-            viewPrice.setText(Float.toString(item.price));
+            viewName.setText(item.getName());
+            viewPrice.setText(Float.toString(item.getPrice()));
             pickerQty.setMinValue(1);
             pickerQty.setMaxValue(999);
-            pickerQty.setValue(item.qty);
+            pickerQty.setValue(item.getQty());
         }
 
 
@@ -106,14 +104,14 @@ public class DialogEditItemShopListFragment extends DialogFragment {
 
                     {
                         // call the interface method
-                        ((EditShopList) getActivity()).addItem(new_name, new_price, new_qty);
+                        ((EditShopListActivity) getActivity()).addItem(new_name, new_price, new_qty);
                     }
 
-                    else if(!(new_name.equals(item.name)&&new_price==item.price&&new_qty==item.qty))
+                    else if(!(new_name.equals(item.getName()) && new_price == item.getPrice() && new_qty == item.getQty()))
 
                     {
                         ShopListEntry tmp_item = new ShopListEntry(new_name, new_price, new_qty);
-                        ((EditShopList) getActivity()).editItem(item, tmp_item);
+                        ((EditShopListActivity) getActivity()).editItem(item, tmp_item);
                     }
 
                     DialogEditItemShopListFragment.this.getDialog().dismiss();

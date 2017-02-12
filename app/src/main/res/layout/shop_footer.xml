@@ -92,7 +92,6 @@
             android:textStyle="bold"
             android:textColor="@android:color/holo_red_light"
             android:text="€ --"
-            android:onClick="showEditItemDialog"
             android:clickable="true"/>
 
     </LinearLayout>

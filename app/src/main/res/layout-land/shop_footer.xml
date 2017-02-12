@@ -91,7 +91,8 @@
             android:textSize="@dimen/medium"
             android:textStyle="bold"
             android:textColor="@android:color/holo_red_light"
-            android:text="€ --"/>
+            android:text="€ --"
+            android:clickable="true"/>
 
     </LinearLayout>
 </RelativeLayout>

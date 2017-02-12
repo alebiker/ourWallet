@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <TableRow
-    android:id="@+id/edit_table_items_row"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:id="@+id/edit_table_items_row"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
+    android:gravity="center_vertical"
     android:background="@drawable/table_item_background"
     android:animateLayoutChanges="true"
     >
@@ -12,25 +13,25 @@
     <RelativeLayout
         android:id="@+id/row_item_info"
         android:layout_width="@dimen/table_item_col_width"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_column="0"
         android:clickable="true"
-        android:onClick="showEditItemDialog"
         >
 
         <TextView
             android:id="@+id/row_item_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-
             android:layout_toLeftOf="@+id/row_item_price"
             android:textSize="@dimen/small"
             android:textStyle="bold"
             android:text="Item 1"
             android:singleLine="true"
+            android:maxEms="10"
+            android:clickable="false"
             />
 
         <TextView
@@ -40,8 +41,9 @@
             android:layout_margin="4dp"
             android:layout_alignParentRight="true"
             android:layout_alignBaseline="@id/row_item_name"
-            android:textSize="@dimen/xsmall"
+            android:textSize="@dimen/small"
             android:text="x1"
+            android:clickable="false"
             />
 
         <TextView
@@ -51,11 +53,10 @@
             android:layout_margin="4dp"
             android:layout_toLeftOf="@id/row_item_qty"
             android:layout_alignBaseline="@id/row_item_name"
-            android:textSize="@dimen/xsmall"
+            android:textSize="@dimen/small"
             android:text="€11.55"
+            android:clickable="false"
             />
-
-
 
     </RelativeLayout>
 
@@ -63,27 +64,39 @@
         android:id="@+id/row_item_users"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:animateLayoutChanges="true">
 
 <!--
-        <include layout="@layout/item_user_no_button"/>
-        <include layout="@layout/item_user_no_button"/>
-        <include layout="@layout/item_user_no_button"/>
-        <include layout="@layout/item_user_no_button"/>
+        <include layout="@layout/item_user_no_button"
+            android:layout_height="wrap_content"
+            android:layout_width="@dimen/table_user_col_size"
+            android:layout_weight="0.25"/>
+        <include layout="@layout/item_user_no_button"
+            android:layout_height="wrap_content"
+            android:layout_width="@dimen/table_user_col_size"
+            android:layout_weight="0.25"/>
+        <include layout="@layout/item_user_no_button"
+            android:layout_height="wrap_content"
+            android:layout_width="@dimen/table_user_col_size"
+            android:layout_weight="0.25"/>
 -->
+
+        <TextView
+            android:id="@+id/row_item_common_qty"
+            android:layout_width="@dimen/table_user_col_size"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:gravity="center"
+            android:textSize="@dimen/xlarge"
+            android:text="1"
+            />
 
     </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/row_item_common_qty"
-        android:layout_width="@dimen/table_user_col_size"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="@dimen/xlarge"
-        android:text="1"
-        />
 
 
 </TableRow>

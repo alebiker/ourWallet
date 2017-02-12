@@ -8,7 +8,6 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CalendarView;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TimePicker;
@@ -16,6 +15,8 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
+
+import it.abapp.mobile.shoppingtogether.model.ShopList;
 
 /**
  * Created by Alessandro on 13/04/2015.
@@ -25,6 +26,7 @@ public class DialogSetShopInfoFragment extends DialogFragment {
     String owner;
     float amount;
     int  n_user;
+    private boolean isNewShopList = true;
 
     public static DialogSetShopInfoFragment newInstance(ShopList shopList) {
         DialogSetShopInfoFragment frag = new DialogSetShopInfoFragment();
@@ -50,6 +52,7 @@ public class DialogSetShopInfoFragment extends DialogFragment {
         Calendar c = Calendar.getInstance();
         Bundle args = getArguments();
         if(args != null){
+            isNewShopList = false;
             date = (Date)args.getSerializable("date");
             c.setTime(date);
             owner = args.getString("owner");
@@ -104,7 +107,7 @@ public class DialogSetShopInfoFragment extends DialogFragment {
                             String toast_info = getString(R.string.void_amount);
                             Toast.makeText(getActivity(), toast_info,
                                     Toast.LENGTH_SHORT).show();
-                            ((EditShopList)getActivity()).finish();
+                            ((EditShopListActivity)getActivity()).finish();
                             return;
                         }
 
@@ -119,18 +122,19 @@ public class DialogSetShopInfoFragment extends DialogFragment {
                             String toast_info = getString(R.string.void_shop_list);
                             Toast.makeText(getActivity(), toast_info,
                                     Toast.LENGTH_SHORT).show();
-                            ((EditShopList)getActivity()).finish();
+                            ((EditShopListActivity)getActivity()).finish();
                             return;
                         }
 
                         // call the interface method
-                        ((EditShopList)getActivity()).updateMainInfo(selected_date,n_user,amount,owner);
+                        ((EditShopListActivity)getActivity()).updateMainInfo(selected_date,n_user,amount,owner);
                         DialogSetShopInfoFragment.this.getDialog().dismiss();
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        ((EditShopList)getActivity()).finish();
+                        if(isNewShopList)
+                            ((EditShopListActivity)getActivity()).finish();
                         DialogSetShopInfoFragment.this.getDialog().cancel();
                     }
                 });

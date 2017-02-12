@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/row_item_user"
+    android:layout_width="@dimen/edit_table_user_col_size"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:weightSum="1"
+    android:orientation="horizontal">
+
+<!--
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:checked="false"
+        android:clickable="false"
+        />
+        -->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/buttonDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:textSize="@dimen/xlarge"
+            style="@style/MySmallButton"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/item_qty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        android:layout_margin="@dimen/margin_number_picker"
+        android:gravity="center"
+        android:text="6"
+        android:textSize="@dimen/xlarge"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/buttonUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:textSize="@dimen/xlarge"
+            style="@style/MySmallButton"/>
+
+        </LinearLayout>
+
+</LinearLayout>

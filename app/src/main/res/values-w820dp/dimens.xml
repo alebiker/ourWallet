@@ -8,7 +8,7 @@
     <dimen name="margin_number_picker">4dp</dimen>
 
     <dimen name="table_info_col_size">150dp</dimen>
-    <dimen name="edit_table_user_col_size">120dp</dimen>
+    <dimen name="edit_table_user_col_size">180dp</dimen>
     <dimen name="table_user_col_size">180dp</dimen>
     <dimen name="table_item_col_width">200dp</dimen>
 
@@ -16,11 +16,13 @@
     <dimen name="table_item_text_size">25sp</dimen>
     <dimen name="table_footer_text_size">25sp</dimen>
 
-    <dimen name="xxsmall">15sp</dimen>
-    <dimen name="xsmall">20sp</dimen>
-    <dimen name="small">25sp</dimen>
-    <dimen name="medium">30sp</dimen>
-    <dimen name="large">35sp</dimen>
+    <dimen name="xxsmall">10sp</dimen>
+    <dimen name="xsmall">15sp</dimen>
+    <dimen name="small">20sp</dimen>
+    <dimen name="medium">24sp</dimen>
+    <dimen name="large">28sp</dimen>
+    <dimen name="xlarge">32sp</dimen>
+    <dimen name="xxlarge">36sp</dimen>
 
     <dimen name="margin_small">4dp</dimen>
     <dimen name="margin_medium">8dp</dimen>

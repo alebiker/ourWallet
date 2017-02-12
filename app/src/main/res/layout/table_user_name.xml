@@ -4,6 +4,6 @@
     android:layout_width="@dimen/table_user_col_size"
     android:layout_height="wrap_content"
     android:textSize="@dimen/medium"
-    android:layout_gravity="center|bottom"
+    android:gravity="center|bottom"
     android:text="Alessandro"
     android:singleLine="true"/>

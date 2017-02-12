@@ -1,7 +1,6 @@
 package it.abapp.mobile.shoppingtogether;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,12 +12,13 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Set;
+
+import it.abapp.mobile.shoppingtogether.model.ShopList;
+import it.abapp.mobile.shoppingtogether.model.User;
 
 /**
  * Created by Alessandro on 08/04/2015.

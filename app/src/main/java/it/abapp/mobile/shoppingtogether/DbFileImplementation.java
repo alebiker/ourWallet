@@ -4,12 +4,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import it.abapp.mobile.shoppingtogether.model.ShopList;
+import it.abapp.mobile.shoppingtogether.model.User;
 
 /**
  * Created by Alessandro on 08/04/2015.
@@ -19,7 +21,8 @@ public class DbFileImplementation implements Db {
     private static DbFileImplementation instance;
     private ArrayList<ShopList> m_shopList;
     private HashMap<ShopList,String> m_shopListFilename;
-    public DbFileImplementation() {
+    private boolean initialized = false;
+    private DbFileImplementation() {
     }
 
     public boolean initialize() {
@@ -36,6 +39,7 @@ public class DbFileImplementation implements Db {
                 m_shopListFilename.put(slHeader, filename.toString());
             }
 
+            initialized = true;
             return true;
         } catch (JSONException | ParseException e) {
             e.printStackTrace();
@@ -72,6 +76,10 @@ public class DbFileImplementation implements Db {
 
     public ShopList getShoppingList(long id) {
         // search the shopList of passed id and load the file retrived by map
+
+        // initialize if needed
+        if (!initialized)
+            initialize();
 
         try {
             String filename = null;

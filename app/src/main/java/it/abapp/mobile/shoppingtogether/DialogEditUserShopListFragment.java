@@ -7,13 +7,11 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CalendarView;
 import android.widget.EditText;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Date;
+import it.abapp.mobile.shoppingtogether.model.User;
 
 /**
  * Created by Alessandro on 13/04/2015.
@@ -71,9 +69,9 @@ public class DialogEditUserShopListFragment extends DialogFragment {
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             if (user == null) {
-                                ((EditShopList) getActivity()).addUser(selected_name);
+                                ((EditShopListActivity) getActivity()).addUser(selected_name);
                             } else if (!selected_name.equals(user.name)) {
-                                ((EditShopList) getActivity()).editUser(user, selected_name);
+                                ((EditShopListActivity) getActivity()).editUser(user, selected_name);
                             }
                             DialogEditUserShopListFragment.this.getDialog().dismiss();
                         }

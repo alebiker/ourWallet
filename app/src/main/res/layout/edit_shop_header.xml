@@ -6,11 +6,16 @@
     android:gravity="center"
     android:orientation="horizontal">
 
-<include layout="@layout/shop_header_fixed"/>
+    <include layout="@layout/shop_header_fixed"
+        android:id="@+id/header_info_fixed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.8"
+        />
 
     <include layout="@layout/is_paid_switch"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        android:layout_weight="0.2"/>
 
 </LinearLayout>

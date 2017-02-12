@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="it.abapp.mobile.shoppingtogether.EditShopList"
+    tools:context="it.abapp.mobile.shoppingtogether.EditShopListActivity"
     >
 
     <item android:id="@+id/action_add_item"
@@ -16,7 +16,7 @@
         android:icon="@android:drawable/ic_menu_camera"
         android:title="@string/action_scan_w_camera"
         app:showAsAction="ifRoom"  />
-    <item android:id="@+id/action_save"
+    <item android:id="@+id/action_start_ocr"
         android:icon="@drawable/ic_action_save"
         android:title="@string/action_save"
         app:showAsAction="ifRoom"  />

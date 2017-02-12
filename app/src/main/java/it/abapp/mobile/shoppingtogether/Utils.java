@@ -2,9 +2,7 @@ package it.abapp.mobile.shoppingtogether;
 
 import android.content.Context;
 import android.os.Environment;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,13 +15,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+
+import it.abapp.mobile.shoppingtogether.model.ShopList;
+import it.abapp.mobile.shoppingtogether.model.ShopListEntry;
+import it.abapp.mobile.shoppingtogether.model.User;
 
 /**
  * Created by Alessandro on 16/03/2015.
@@ -31,22 +29,36 @@ import java.util.UUID;
 
 public class Utils {
 
-    private static Context context = null;
+    private static final String TAG = "Utils";
+    private static Context mContext = null;
     private static HashMap<ShopList,String> m_shoplistFilename;
+    private static Utils mInstance;
 
-    public static void setContext (Context cntx) {
-        context = cntx;
+    public Utils(Context context) {
+        this.mContext = context;
     }
 
-    public static Context getContext () {
-        return context;
+    public static Utils getInstance(Context context){
+        if(mInstance == null)
+            mInstance = new Utils(context);
+        return mInstance;
     }
+
+    /**
+     * Method that returns the context of the sigleton class of Utils.
+     * BE WARN that return null if any context is been set yet.
+     * @return The Context set of the class.
+     */
+    public static Context getContext(){
+        return mContext;
+    }
+
 
     public static JSONObject loadJSONFromAsset(String filename) {
         String json = null;
         try {
 
-            InputStream is = context.getAssets().open(filename);
+            InputStream is = mContext.getAssets().open(filename);
 
             int size = is.available();
 
@@ -115,7 +127,7 @@ public class Utils {
         FileInputStream iS;
         String json;
         try {
-            iS = context.openFileInput(filename);
+            iS = mContext.openFileInput(filename);
 
             int size = iS.available();
 
@@ -166,7 +178,7 @@ public class Utils {
         ShopList sl = new ShopList();
         sl.setTotal(new Float(jo_inside.getDouble("amount")));
         sl.id = jo_inside.getLong("id");
-        sl.date = new SimpleDateFormat(context.getString(R.string.date_pattern)).parse(jo_inside.getString("date"));
+        sl.date = new SimpleDateFormat(mContext.getString(R.string.date_pattern)).parse(jo_inside.getString("date"));
         sl.owner = jo_inside.getString("owner");
         // map ID to ShopListentry
         JSONArray items_jArry = jo_inside.getJSONArray("items");
@@ -218,7 +230,7 @@ public class Utils {
         filename.append(jsonObject.getString("filename"));
 
         Calendar c = Calendar.getInstance();
-        c.setTime(new SimpleDateFormat(context.getString(R.string.date_pattern)).parse(jsonObject.getString("date")));
+        c.setTime(new SimpleDateFormat(mContext.getString(R.string.date_pattern)).parse(jsonObject.getString("date")));
         shopListsHeader.date = c.getTime();
 
         shopListsHeader.paid = jsonObject.getBoolean("isPaid");
@@ -236,7 +248,7 @@ public class Utils {
         FileOutputStream outputStream;
         try {
             outputStream = new FileOutputStream(new File(getShopListStorageDir(),slFilename));
-            //outputStream = context.getfopenFileOutput(slFilename, Context.MODE_PRIVATE);
+            //outputStream = mContext.getfopenFileOutput(slFilename, Context.MODE_PRIVATE);
             outputStream.write(jsonObject.toString().getBytes());
             outputStream.close();
             return true;
@@ -252,7 +264,7 @@ public class Utils {
 
             File f_header =  new File(getShopListHeaderStorageDir(),  slhFilename);
             outputStream = new FileOutputStream(f_header);
-            //outputStream = context.getfopenFileOutput( slhFilename, Context.MODE_PRIVATE);
+            //outputStream = mContext.getfopenFileOutput( slhFilename, Context.MODE_PRIVATE);
             outputStream.write(jsonObject.toString().getBytes());
             outputStream.close();
             return true;
@@ -266,7 +278,7 @@ public class Utils {
         JSONObject jsonObject = new JSONObject();
         JSONObject jsonShopList = new JSONObject();
         jsonShopList.put("id",shopList.id);
-        jsonShopList.put("date", new SimpleDateFormat(context.getString(R.string.date_pattern)).format(shopList.date));
+        jsonShopList.put("date", new SimpleDateFormat(mContext.getString(R.string.date_pattern)).format(shopList.date));
         jsonShopList.put("amount", shopList.amount_total);
         jsonShopList.put("owner", shopList.owner);
         JSONArray jUsers = new JSONArray();
@@ -277,7 +289,7 @@ public class Utils {
             for(Map.Entry<ShopListEntry,Integer> m_item : shopList.m_user_item_list.get(u).entrySet()){
                 if(m_item.getValue() > 0) {
                     JSONObject jItem = new JSONObject();
-                    jItem.put("id", m_item.getKey().name);
+                    jItem.put("id", m_item.getKey().getName());
                     jItem.put("qty", m_item.getValue());
                     jUserItems.put(jItem);
                 }
@@ -289,9 +301,9 @@ public class Utils {
         JSONArray jItems = new JSONArray();
         for(ShopListEntry item : shopList.items){
             JSONObject jItem = new JSONObject();
-            jItem.put("id",item.name);
-            jItem.put("qty",item.qty);
-            jItem.put("price",item.price);
+            jItem.put("id",item.getName());
+            jItem.put("qty",item.getQty());
+            jItem.put("price",item.getPrice());
             jItems.put(jItem);
         }
 
@@ -306,7 +318,7 @@ public class Utils {
         //TODO check
         JSONObject jsonSLHeader = new JSONObject();
         jsonSLHeader.put("id", shopList.id);
-        jsonSLHeader.put("date", new SimpleDateFormat(context.getString(R.string.date_pattern)).format(shopList.date));
+        jsonSLHeader.put("date", new SimpleDateFormat(mContext.getString(R.string.date_pattern)).format(shopList.date));
         jsonSLHeader.put("filename", filename);
         jsonSLHeader.put("amount", shopList.amount_total);
         jsonSLHeader.put("owner", shopList.owner);
@@ -338,51 +350,40 @@ public class Utils {
 
     public static File getShopListStorageDir() {
         // Get the directory for the app's private pictures directory.
-        File file = context.getDir("shopList", Context.MODE_PRIVATE);
-        if (!file.mkdirs()) {
+        File file = mContext.getDir("shopList", Context.MODE_PRIVATE);
+        if (!file.mkdirs() && !file.exists()) {
             Log.e("ERR", "Directory not created");
         }
         return file;
     }
     public static File getShopListHeaderStorageDir() {
         // Get the directory for the app's private pictures directory.
-        File file = context.getDir("headers", Context.MODE_PRIVATE);
-        if (!file.mkdirs()) {
+        File file = mContext.getDir("headers", Context.MODE_PRIVATE);
+        if (!file.mkdirs() && !file.exists()) {
             Log.e("ERR", "Directory not created");
         }
         return file;
     }
     public static File getShopListExtStorageDir() {
         // Get the directory for the app's private pictures directory.
-        File file = new File(context.getExternalFilesDir(
+        File file = new File(mContext.getExternalFilesDir(
                 Environment.DIRECTORY_DOCUMENTS), "shopList");
-        if (!file.mkdirs()) {
+        if (!file.mkdirs() && !file.exists()) {
             Log.e("ERR", "Directory not created");
         }
         return file;
     }
     public static File getShopListHeaderExtStorageDir() {
         // Get the directory for the app's private pictures directory.
-        File file = new File(context.getExternalFilesDir(
+        File file = new File(mContext.getExternalFilesDir(
                 Environment.DIRECTORY_DOCUMENTS), "headers");
-        if (!file.mkdirs()) {
+        if (!file.mkdirs() && !file.exists()) {
             Log.e("ERR", "Directory not created");
         }
         return file;
     }
 
-    public static String formatToCash(Float amount){
-        String out = context.getString(R.string.euro);
-        out += " "+String.format("%.2f", amount);
-        return out;
 
-    }
-
-    public static int dpToPx(int dp) {
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-        return px;
-    }
 
     public static boolean deleteShopListFile (String filename){
         File file = new File(getShopListStorageDir(), filename);
@@ -401,21 +402,5 @@ public class Utils {
     }
     */
 
-    public static File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = context.getExternalFilesDir(
-                Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        //mCurrentPhotoPath = "file:" + image.getAbsolutePath();
-        return image;
-    }
 
 }

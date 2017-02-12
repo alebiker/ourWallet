@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Checkable;
@@ -23,9 +22,11 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import android.widget.AbsListView.MultiChoiceModeListener;
+import com.albori.android.utilities.Utilities;
 
 import java.util.List;
+
+import it.abapp.mobile.shoppingtogether.model.ShopList;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -47,7 +48,9 @@ public class MainActivity extends ActionBarActivity {
         // modify the listView
         listView = (ListView) rootView.findViewById(R.id.listView);
 
-        Utils.setContext(getApplicationContext());
+        Utils.getInstance(this);
+        Utilities.getInstance(this);
+
         DbFileImplementation.getInstance().initialize();
         shopList = DbFileImplementation.getInstance().getSummaryShoppingLists();
         // get data from the table by the ListAdapter
@@ -146,7 +149,7 @@ public class MainActivity extends ActionBarActivity {
 
     private void showShopList(ShopList selectedShopList) {
         // create and initialize the intent
-        Intent intent = new Intent(getApplicationContext(), ShowShopList.class);
+        Intent intent = new Intent(getApplicationContext(), ShowShopListActivity.class);
 
         Bundle b = new Bundle();
         // TODO check
@@ -158,7 +161,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected  void onStart(){
-        super.onResume();
+        super.onStart();
         adapter.notifyDataSetChanged();
     }
 
@@ -175,7 +178,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 // create and initialize the intent
-                Intent intent = new Intent(getApplicationContext(), EditShopList.class);
+                Intent intent = new Intent(getApplicationContext(), EditShopListActivity.class);
 
                 Bundle b = new Bundle();
                 // TODO instantiate a valid efficient intent with cmd 'NEW SHOP LIST'
