@@ -17,7 +17,7 @@
 #include "common.h"
 #include "hydrogentextdetector.h"
 
-#define DEBUG_MODE false
+#define DEBUG_MODE true
 
 #ifdef __cplusplus
 extern "C" {

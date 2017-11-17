@@ -21,6 +21,11 @@
 
 class HydrogenTextDetector {
 public:
+
+   static void *thread_func(void*);
+
+   static int start_logger(const char *app_name);
+
   HydrogenTextDetector();
 
   ~HydrogenTextDetector();
@@ -71,7 +76,7 @@ public:
     l_int32 cluster_min_edge_avg;
 
     TextDetectorParameters()
-        : debug(false),
+        : debug(true),
           edge_tile_x(32),
           edge_tile_y(64),
           edge_thresh(64),

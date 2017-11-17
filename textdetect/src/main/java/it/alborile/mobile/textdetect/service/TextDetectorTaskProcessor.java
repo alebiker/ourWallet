@@ -26,6 +26,8 @@ import com.googlecode.leptonica.android.Scale;
 
 import com.albori.android.utilities.Utilities;
 
+import static com.googlecode.leptonica.android.WriteFile.writeBitmap;
+
 
 /**
  * Created by alex on 23/02/16.
@@ -287,8 +289,11 @@ public class TextDetectorTaskProcessor {
             int w = curr.getWidth();
             int h = curr.getHeight();
 
+            Log.i(TAG, "processPix: started on pix (h:" + h + " w:" + w+ ")");
+
             if (outputDir != null && debug) {
-                WriteFile.writeImpliedFormat(curr, new File(outputDir, time + "_0_input.jpg"));
+                Bitmap inputBpm = writeBitmap(curr);
+                WriteFile.writeImpliedFormat(curr, new File(outputDir, time + "_0_input.png"));
             }
 
             if (isStopRequested())
@@ -301,7 +306,7 @@ public class TextDetectorTaskProcessor {
                 curr = temp;
 
                 if (outputDir != null && debug) {
-                    WriteFile.writeImpliedFormat(curr, new File(outputDir, time + "_1_8bpp.jpg"));
+                    WriteFile.writeImpliedFormat(curr, new File(outputDir, time + "_1_8bpp.png"));
                 }
             }
 
@@ -318,14 +323,14 @@ public class TextDetectorTaskProcessor {
                 curr = temp;
 
                 if (outputDir != null && debug) {
-                    WriteFile.writeImpliedFormat(curr, new File(outputDir, time + "_2_scaled.jpg"));
+                    WriteFile.writeImpliedFormat(curr, new File(outputDir, time + "_2_scaled.png"));
                 }
             }
 
             pixa = detectText(curr, angle, params, debug);
 
             if (outputDir != null && debug) {
-                pixa.writeToFileRandomCmap(new File(outputDir, time + "_5_detected.jpg"));
+                pixa.writeToFileRandomCmap(new File(outputDir, time + "_5_detected.png"));
             }
 
             ArrayList<Bitmap> bitmaps = new ArrayList<>();
@@ -333,7 +338,7 @@ public class TextDetectorTaskProcessor {
             if (debug) {
                 for (int i = 0; i < pixa.size(); i++) {
                     Pix pix = pixa.getPix(i);
-                    bitmaps.add(WriteFile.writeBitmap(pix));
+                    bitmaps.add(writeBitmap(pix));
                 }
             }
 
@@ -413,7 +418,8 @@ public class TextDetectorTaskProcessor {
             this.file = file;
             this.data = data;
             this.params = params;
-            this.outputDir = Environment.getExternalStorageDirectory();
+            this.outputDir =
+                    Utilities.createPublicDirectory(String.valueOf(System.currentTimeMillis()) + "_td");
         }
     }
 

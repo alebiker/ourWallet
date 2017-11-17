@@ -353,6 +353,7 @@ public class HighliterActivity extends AppCompatActivity {
 
         if(!nameRects.isEmpty()) {
             TextDetector.Parameters nameDetectParams = new TextDetector.Parameters();
+            nameDetectParams.setFlag(TextDetector.Parameters.FLAG_DEBUG_MODE, true);
             nameDetectParams.setFlag(TextDetector.Parameters.FLAG_ALIGN_TEXT, true);
 
             for (Rect rect : nameRects) {
@@ -399,6 +400,7 @@ public class HighliterActivity extends AppCompatActivity {
 
         //TODO start only if some task enqueued
         Utilities.executeAsyncTask(mTextDetectAsyncTask, mTextDetector);
+//        mTextDetectAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, mTextDetector);
     }
 
     /** Add full-res rectangle as detected rect */

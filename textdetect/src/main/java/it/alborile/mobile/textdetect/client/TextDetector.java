@@ -122,6 +122,7 @@ public class TextDetector {
         mContext = new WeakReference<Context>(context);
         mSuppressAlerts = suppressAlerts;
         mParameters = new Parameters();
+        mParameters.setFlag(Parameters.FLAG_DEBUG_MODE, true);
 
         connectTextDetectionService(init);
     }

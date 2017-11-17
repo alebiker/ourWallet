@@ -4,15 +4,16 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
+LOCAL_MODULE := libtextdetect
+
 EXPLODED_AAR := $(LOCAL_PATH)/../build/intermediates/exploded-aar
 TESS_TWO := $(EXPLODED_AAR)/com.rmtheis/tess-two
-TESS_TWO_V := 5.4.2b
+TESS_TWO_V := 8.0.0
 TESS_TWO_LIBS := $(TESS_TWO)/$(TESS_TWO_V)/jni
 
 PREBUILD_LIBS := $(TESS_TWO_LIBS)
 PREBUILT_PATH := $(PREBUILD_LIBS)/$(TARGET_ARCH_ABI)
 
-LOCAL_MODULE := libtextdetect
 
 LOCAL_SRC_FILES += \
   src/clusterer.cpp \

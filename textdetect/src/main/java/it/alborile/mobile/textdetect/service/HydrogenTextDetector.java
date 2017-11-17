@@ -190,7 +190,7 @@ public class HydrogenTextDetector {
         public int cluster_min_edge_avg;
 
         public Parameters() {
-            debug = false;
+            debug = true;
             out_dir = Environment.getExternalStorageDirectory().toString();
 
             // Edge-based thresholding

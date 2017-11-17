@@ -618,7 +618,8 @@ public class OcrTaskProcessor {
             this.file = file;
             this.data = data;
             this.params = params;
-            this.outputDir = Environment.getExternalStorageDirectory();
+            this.outputDir =
+                    Utilities.createPublicDirectory(String.valueOf(System.currentTimeMillis()) + "_ocr");
         }
     }
 

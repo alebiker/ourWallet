@@ -5,11 +5,13 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.util.Log;
 
+import com.albori.android.utilities.Utilities;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
-import com.albori.android.utilities.Utilities;
+//import com.albori.android.utilities.Utilities;
 
 
 /**

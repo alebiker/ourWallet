@@ -24,6 +24,5 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved) {
       return -1;
   }
   assert(env != NULL);
-
   return JNI_VERSION_1_6;
 }

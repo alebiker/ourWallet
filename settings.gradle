@@ -1,1 +1,1 @@
-include ':app', ':textdetect'
+include ':app', ':textdetect', ':utilities'
