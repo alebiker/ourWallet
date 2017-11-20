@@ -1,10 +1,84 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <!--
+    Base application theme, dependent on API level. This theme is replaced
+    by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+-->
+    <style name="AppTheme" parent="AppTheme.Base">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <!--If you are using revision 22.1 please use just windowNoTitle. Without android:-->
+        <item name="windowNoTitle">true</item>
+        <!--We will be using the toolbar so no need to show ActionBar-->
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="android:textColorPrimary">@android:color/primary_text_light</item>
+        <item name="android:buttonStyle">@style/Button.Bar</item>
+        <item name="colorButtonNormal">@color/accent</item>
+    </style>
+
+    <style name="Button.Bar" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@color/primary_text_default_material_dark</item>
+        <item name="android:disabledAlpha">0.5</item>
+    </style>
+
+    <style name="MyButtonStyle" parent="@style/BaseButton">
+        <item name="android:background">@drawable/mybutton</item>
+        <item name="android:textColor">@android:color/primary_text_dark</item>
+    </style>
+
+    <style name="Button.Borderless" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:disabledAlpha">0.5</item>
     </style>
 
 
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <!-- the theme applied to the application or activity -->
+
+    <style name="MyButton"  parent="Widget.AppCompat.Button">
+        <item name="android:background" tools:ignore="NewApi">@drawable/button</item>
+        <item name="background">@drawable/button</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_margin">@dimen/margin_medium</item>
+        <item name="android:padding">@dimen/padding_medium</item>
+    </style>
+    <style name="MySmallButton"  parent="Widget.AppCompat.Button.Small">
+        <item name="android:background" tools:ignore="NewApi">@drawable/button</item>
+        <item name="background">@drawable/button</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_margin">@dimen/margin_small</item>
+    </style>
+    <!--<style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">-->
+    <!--<item name="android:background"  tools:ignore="NewApi">@color/material_deep_teal_500</item>-->
+    <!--<item name="background">@color/material_deep_teal_500</item>-->
+    <!--</style>-->
+
+    <!--<style name="AppBaseTheme" parent="@style/Theme.AppCompat.Light">-->
+    <!--<item name="android:actionBarStyle"   tools:ignore="NewApi">@style/MyActionBar</item>-->
+    <!--<item name="actionBarStyle">@style/MyActionBar</item>-->
+    <!--<item name="actionModeStyle">@style/MyActionMode</item>-->
+    <!--</style>-->
+
+    <!--<style name="MyActionMode" parent="Widget.AppCompat.ActionMode">-->
+    <!--<item name="actionModeBackground">@android:color/black</item>-->
+    <!--<item name="background">@color/material_deep_teal_200</item>-->
+    <!--<item name="backgroundSplit">@color/button_material_light</item>-->
+    <!--</style>-->
+
+    <color name="row_alt">#110a0a0a</color>
 
 </resources>

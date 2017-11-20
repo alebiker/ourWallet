@@ -2,5 +2,13 @@
 <resources>
     <color name="col_backgorund">#110a0a0a</color>
     <color name="material_deep_teal_100">#b2dfdb</color>
+    <color name="primary">#536dfe</color>
+    <color name="primary_dark">#3949ab</color>
+    <color name="accent">#f44336</color>
+    <color name="red">#D92720</color>
+    <color name="green">#41A62A</color>
+    <color name="dialog_new_visitor_title_color">#012169</color>
+    <color name="primary_dark_button">#FF3949AB</color>
+    <color name="md_white">#ffffff</color>
 
 </resources>

@@ -4,8 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,15 +17,16 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.albori.android.utilities.Utilities;
+
 import java.text.SimpleDateFormat;
 
 import it.abapp.mobile.shoppingtogether.model.ShopList;
 import it.abapp.mobile.shoppingtogether.model.ShopListEntry;
 import it.abapp.mobile.shoppingtogether.model.User;
-import com.albori.android.utilities.Utilities;
 
 
-public class ShowShopListActivity extends ActionBarActivity {
+public class ShowShopListActivity extends AppCompatActivity {
 
     ShopList sl;
     ViewGroup header;

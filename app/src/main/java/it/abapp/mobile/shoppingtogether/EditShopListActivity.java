@@ -16,6 +16,7 @@ import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -77,6 +78,11 @@ public class EditShopListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_shop_list);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        //Toolbar will now take on default actionbar characteristics
+        setSupportActionBar (toolbar);
 
         Utilities.getInstance(getApplicationContext());
         Utils.getInstance(getApplicationContext());

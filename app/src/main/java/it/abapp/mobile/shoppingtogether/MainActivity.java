@@ -5,7 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,7 +30,7 @@ import java.util.List;
 import it.abapp.mobile.shoppingtogether.model.ShopList;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     static final int REQUEST_NEW_SHOP_LIST = 1;
     public static final String SHOP_LIST = "shop_list";
@@ -47,6 +48,11 @@ public class MainActivity extends ActionBarActivity {
         View rootView = findViewById(R.id.main_root);
         // modify the listView
         listView = (ListView) rootView.findViewById(R.id.listView);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        //Toolbar will now take on default actionbar characteristics
+        setSupportActionBar (toolbar);
 
         Utils.getInstance(this);
         Utilities.getInstance(this);
@@ -127,7 +133,6 @@ public class MainActivity extends ActionBarActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 ShopList selectedShopList = (ShopList)listView.getItemAtPosition(position);
                 showShopList(selectedShopList);
             }
@@ -147,6 +152,22 @@ public class MainActivity extends ActionBarActivity {
         addListenerOnButton(rootView);
     }
 
+    @Override
+    protected  void onStart(){
+        super.onStart();
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_NEW_SHOP_LIST && resultCode == RESULT_OK) {
+            //Bundle extras = data.getExtras();
+            //Bitmap imageBitmap = (Bitmap) extras.get("data");
+            ShopList shopList = (ShopList)data.getSerializableExtra(SHOP_LIST);
+            showShopList(shopList);
+        }
+    }
+
     private void showShopList(ShopList selectedShopList) {
         // create and initialize the intent
         Intent intent = new Intent(getApplicationContext(), ShowShopListActivity.class);
@@ -157,12 +178,6 @@ public class MainActivity extends ActionBarActivity {
         intent.putExtras(b);
 
         startActivity(intent);
-    }
-
-    @Override
-    protected  void onStart(){
-        super.onStart();
-        adapter.notifyDataSetChanged();
     }
 
     private ListView getListView(){
@@ -191,16 +206,6 @@ public class MainActivity extends ActionBarActivity {
 
 
 
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_NEW_SHOP_LIST && resultCode == RESULT_OK) {
-            //Bundle extras = data.getExtras();
-            //Bitmap imageBitmap = (Bitmap) extras.get("data");
-            ShopList shopList = (ShopList)data.getSerializableExtra(SHOP_LIST);
-            showShopList(shopList);
-        }
     }
 
     public class AppsAdapter extends BaseAdapter {
