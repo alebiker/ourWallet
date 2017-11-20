@@ -78,8 +78,9 @@ repositories {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.rmtheis:tess-two:8.0.0'
-    //    compile 'com.albori.android:utilities:1.0.2b'
-    //    compile 'com.albori.android:utilities'
+//    compile 'com.googlecode.eyesfree:eyes-two:0.9'
+    compile 'it.bluereply.android:utilities:0.9'
+
     androidTestCompile 'junit:junit:4.12'
     testCompile 'junit:junit:4.12'
     androidTestCompile 'com.android.support.test:runner:0.5'
@@ -94,5 +95,4 @@ dependencies {
     // Testing-only dependencies
     // Force usage of support annotations in the test app, since it is internally used by the runner module.
     androidTestCompile 'com.android.support:support-annotations:25.3.1'
-    compile project(':utilities')
 }

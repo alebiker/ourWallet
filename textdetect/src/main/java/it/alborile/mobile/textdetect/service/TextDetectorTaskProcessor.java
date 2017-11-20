@@ -291,10 +291,12 @@ public class TextDetectorTaskProcessor {
 
             Log.i(TAG, "processPix: started on pix (h:" + h + " w:" + w+ ")");
 
+            Bitmap inputBpm2;
             if (outputDir != null && debug) {
-                Bitmap inputBpm = writeBitmap(curr);
+//                Bitmap inputBpm = writeBitmap(curr);
                 WriteFile.writeImpliedFormat(curr, new File(outputDir, time + "_0_input.png"));
             }
+//            inputBpm2 = writeBitmap(curr);
 
             if (isStopRequested())
                 return null;
@@ -304,6 +306,7 @@ public class TextDetectorTaskProcessor {
                 temp = Convert.convertTo8(curr);
                 curr.recycle();
                 curr = temp;
+//                Bitmap conv8Bpm = writeBitmap(curr);
 
                 if (outputDir != null && debug) {
                     WriteFile.writeImpliedFormat(curr, new File(outputDir, time + "_1_8bpp.png"));
@@ -327,6 +330,7 @@ public class TextDetectorTaskProcessor {
                 }
             }
 
+//            Bitmap inputBpm = writeBitmap(curr);
             pixa = detectText(curr, angle, params, debug);
 
             if (outputDir != null && debug) {
@@ -376,7 +380,10 @@ public class TextDetectorTaskProcessor {
         textDetector.setParameters(hydrogenParams);
 
         // Run text detection (thresholding, alignment, etc.)
+//        Bitmap sourceBpm = writeBitmap(curr);
         textDetector.setSourceImage(curr);
+        Pix realCurr = textDetector.getSourceImage();
+//        Bitmap realBpm = writeBitmap(realCurr);
         textDetector.detectText();
 
         // Get alignment angle
