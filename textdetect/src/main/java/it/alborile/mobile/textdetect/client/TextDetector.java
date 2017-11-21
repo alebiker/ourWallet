@@ -554,6 +554,8 @@ public class TextDetector {
      */
     public static class Parameters implements Parcelable {
 
+        public static final String VAR_OUT_DIR = "out_dir";
+
         /** Aligns horizontal text in an image */
         public static final String FLAG_ALIGN_TEXT = "align_text";
 
@@ -568,6 +570,7 @@ public class TextDetector {
 
         /** Small characters <15px detection */
         public static final String FLAG_SMALL_DETECTION = "small_mode";
+
 
         private Bundle mVariables;
 

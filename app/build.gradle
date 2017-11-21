@@ -35,7 +35,7 @@ dependencies {
 
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'it.bluereply.android:utilities:0.9'
+    compile 'it.bluereply.android:utilities:1.1b'
     compile project(':textdetect')
 
     testCompile 'junit:junit:4.12'

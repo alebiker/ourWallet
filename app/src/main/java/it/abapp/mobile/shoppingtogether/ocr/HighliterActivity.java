@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import it.alborile.mobile.ocr.client.Ocr;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -337,6 +338,14 @@ public class HighliterActivity extends AppCompatActivity {
         mTextDetector = new TextDetectWorkProcessor(this);
         mTextDetectAsyncTask = new TextDetectionAsyncTask();
 
+        // Directory creation
+        String dirFullPath = "";
+        String taskDirectory = "ourwallet/td_" + Long.toString(System.currentTimeMillis());
+        File dir;
+        if((dir = Utilities.createDirectory(taskDirectory, Utilities.RESOURCES_LOCATION.EXTERNAL)).exists()){
+           dirFullPath =  dir.getPath();
+        }
+
         // from RectF to Rect
         List<Rect> nameRects = new ArrayList<>();
         List<Rect> priceRects = new ArrayList<>();
@@ -353,8 +362,12 @@ public class HighliterActivity extends AppCompatActivity {
 
         if(!nameRects.isEmpty()) {
             TextDetector.Parameters nameDetectParams = new TextDetector.Parameters();
+            if (!dirFullPath.isEmpty())
+                nameDetectParams.setVariable(TextDetector.Parameters.VAR_OUT_DIR, dirFullPath);
             nameDetectParams.setFlag(TextDetector.Parameters.FLAG_DEBUG_MODE, true);
-            nameDetectParams.setFlag(TextDetector.Parameters.FLAG_ALIGN_TEXT, true);
+//            nameDetectParams.setFlag(TextDetector.Parameters.FLAG_ALIGN_TEXT, true);
+//            nameDetectParams.setFlag(TextDetector.Parameters.FLAG_NUMBER_DETECTION, true);
+//            nameDetectParams.setFlag(TextDetector.Parameters.FLAG_SMALL_DETECTION, true);
 
             for (Rect rect : nameRects) {
                 TextDetectWork nameDetectWork = new TextDetectWork(this.orgImgUri, nameDetectParams, rect) {
@@ -376,9 +389,12 @@ public class HighliterActivity extends AppCompatActivity {
 
         if (!priceRects.isEmpty()) {
             TextDetector.Parameters priceDetectParams = new TextDetector.Parameters();
-            priceDetectParams.setFlag(TextDetector.Parameters.FLAG_ALIGN_TEXT, true);
-            priceDetectParams.setFlag(TextDetector.Parameters.FLAG_NUMBER_DETECTION, true);
-            priceDetectParams.setFlag(TextDetector.Parameters.FLAG_SMALL_DETECTION, true);
+            if (!dirFullPath.isEmpty())
+                priceDetectParams.setVariable(TextDetector.Parameters.VAR_OUT_DIR, dirFullPath);
+            priceDetectParams.setFlag(TextDetector.Parameters.FLAG_DEBUG_MODE, true);
+//            priceDetectParams.setFlag(TextDetector.Parameters.FLAG_ALIGN_TEXT, true);
+//            priceDetectParams.setFlag(TextDetector.Parameters.FLAG_NUMBER_DETECTION, true);
+//            priceDetectParams.setFlag(TextDetector.Parameters.FLAG_SMALL_DETECTION, true);
 
             for(Rect rect : priceRects){
                 TextDetectWork priceDetectWork = new TextDetectWork(this.orgImgUri, priceDetectParams, rect) {
@@ -787,10 +803,12 @@ public class HighliterActivity extends AppCompatActivity {
 
             // wait until every request has been replied
             try {
-                while (processor.getStatus() != TextDetectWorkProcessor.Status.IDLE)
+                while (processor.getStatus() != TextDetectWorkProcessor.Status.IDLE) {
                     synchronized (processor) {
                         processor.wait();
                     }
+                }
+                processor.stop();
                 Log.d(TAG,"Text Detection activities closed");
             } catch (InterruptedException e) {
                 e.printStackTrace();

@@ -688,6 +688,7 @@ public class OCRActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(OCRWorkProcessor... ocrWorkProcessors) {
+            Log.d(TAG,"OCR activities started");
             processor = ocrWorkProcessors[0];
             processor.start();
 

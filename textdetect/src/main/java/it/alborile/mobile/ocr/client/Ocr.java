@@ -380,6 +380,7 @@ public class Ocr {
 
                 try {
                     mVersion = mIOcr.getVersion();
+                    Log.i(TAG, "OCR service connected (version " + mVersion + ')');
 
                     // The Ocr service must be at least the min version needed
                     // by the library stub. Do not try to run the older Ocr with
@@ -697,6 +698,8 @@ public class Ocr {
         /** Save blob choices allowing us to get alternative results. */
         public static final String VAR_SAVE_BLOB_CHOICES = "save_blob_choices";
 
+        /* Out directory to save dabug images */
+        public static final String VAR_OUT_DIR = "out_dir";
 
         /** Run Tesseract only - fastest */
         public static final int OEM_TESSERACT_ONLY = 0;
@@ -732,6 +735,7 @@ public class Ocr {
 
         /** Small characters <15px detection */
         public static final String FLAG_SMALL_DETECTION = "small_mode";
+
 
         private Bundle mVariables;
 

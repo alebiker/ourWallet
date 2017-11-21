@@ -19,7 +19,6 @@ package it.alborile.mobile.ocr.service;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 
@@ -63,8 +62,8 @@ public class OcrTaskProcessor {
     /** The wrapper for the native Tesseract instance. */
     private final TessBaseAPI mTessBaseAPI;
 
-    /** The wrapper for the native Hydrogen instance. */
-    private final HydrogenTextDetector mTextDetector;
+//    /** The wrapper for the native Hydrogen instance. */
+//    private final HydrogenTextDetector mTextDetector;
 
     /** List of queued tasks with the current task at the front. */
     private final LinkedList<OcrTask> mTaskQueue;
@@ -90,7 +89,7 @@ public class OcrTaskProcessor {
 
         mHandler = new Handler();
         mTessBaseAPI = new TessBaseAPI();
-        mTextDetector = new HydrogenTextDetector();
+//        mTextDetector = new HydrogenTextDetector();
         mTaskQueue = new LinkedList<OcrTask>();
     }
 
@@ -207,22 +206,27 @@ public class OcrTaskProcessor {
     }
 
     private long enqueueTask(OcrTask task) {
+        boolean wasEmpty = false;
 
         synchronized (mTaskQueue) {
+            wasEmpty = mTaskQueue.isEmpty();
             mTaskQueue.addLast(task);
         }
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                loopNextTaskifAny();
-            }
-        });
+        if (wasEmpty) {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    nextTask();
+                }
+            });
+        }
 
         return task.token;
     }
 
-    private void loopNextTaskifAny() {
+    private void nextTask() {
         synchronized (mTaskQueue){
+            Log.d(TAG, "Launch next task if any...");
             if (mTaskQueue.isEmpty() || mCurrentTask != null)
                 return;
             mCurrentTask = new AsyncOcrTask();
@@ -242,11 +246,12 @@ public class OcrTaskProcessor {
         isEmpty = mTaskQueue.isEmpty();
 
         if (!isEmpty) {
-            loopNextTaskifAny();
+            nextTask();
         }
     }
 
     private class AsyncOcrTask extends AsyncTask<OcrTask, OcrResult, ArrayList<OcrResult>> {
+        private final String TAG = "AsyncOcrTask";
         private int mPid;
         private int mToken;
         private boolean mStopRequested = false;
@@ -256,6 +261,7 @@ public class OcrTaskProcessor {
 
         @Override
         protected ArrayList<OcrResult> doInBackground(OcrTask... tasks) {
+            Log.d(TAG, "Task " + tasks[0].token + " started");
             if (tasks.length == 0 || tasks[0] == null || isStopRequested()) {
                 return null;
             }
@@ -619,7 +625,8 @@ public class OcrTaskProcessor {
             this.data = data;
             this.params = params;
             this.outputDir =
-                    Utilities.createPublicDirectory(String.valueOf(System.currentTimeMillis()) + "_ocr");
+                    Utilities.createDirectory(String.valueOf(System.currentTimeMillis()) + "_ocr",
+                            Utilities.RESOURCES_LOCATION.EXTERNAL);
         }
     }
 

@@ -1,10 +1,14 @@
 package it.abapp.mobile.shoppingtogether;
 
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -33,6 +37,7 @@ public class MainActivity extends ActionBarActivity {
 
     static final int REQUEST_NEW_SHOP_LIST = 1;
     public static final String SHOP_LIST = "shop_list";
+    private static final int MY_PERMISSIONS_REQUEST = 1;
     ListView listView;
     ShoppingListAdapter adapter;
     List<ShopList> shopList;
@@ -50,6 +55,8 @@ public class MainActivity extends ActionBarActivity {
 
         Utils.getInstance(this);
         Utilities.getInstance(this);
+
+        checkPermission();
 
         DbFileImplementation.getInstance().initialize();
         shopList = DbFileImplementation.getInstance().getSummaryShoppingLists();
@@ -165,6 +172,33 @@ public class MainActivity extends ActionBarActivity {
         adapter.notifyDataSetChanged();
     }
 
+    private boolean checkPermission () {
+        boolean alreadyGrant = true;
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // No explanation needed, we can request the permission.
+            alreadyGrant = false;
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    },
+                    MY_PERMISSIONS_REQUEST);
+        }
+        return alreadyGrant;
+    }
+
     private ListView getListView(){
         return listView;
     }
@@ -202,6 +236,32 @@ public class MainActivity extends ActionBarActivity {
             showShopList(shopList);
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
 
     public class AppsAdapter extends BaseAdapter {
         public AppsAdapter() {

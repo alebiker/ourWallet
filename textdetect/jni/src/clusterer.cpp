@@ -511,6 +511,8 @@ l_int32 MergeClusterPartners(PIX *pix8, PIXA *pixa, NUMA *confs, l_uint8 *remove
   if (!n) {
     L_INFO("pixa contained 0 pix", procName);
     return 0;
+  }else{
+    L_INFO("pixa contained some pix", procName);
   }
 
   /* If n == 0, then left, right, and remove may be NULL. Since we have

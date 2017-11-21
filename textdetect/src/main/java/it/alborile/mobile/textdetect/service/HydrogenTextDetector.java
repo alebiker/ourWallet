@@ -19,6 +19,7 @@ package it.alborile.mobile.textdetect.service;
 import android.os.Environment;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.googlecode.leptonica.android.Pix;
 import com.googlecode.leptonica.android.Pixa;
@@ -27,6 +28,7 @@ import com.googlecode.leptonica.android.Pixa;
  * @author alanv@google.com (Alan Viverette)
  */
 public class HydrogenTextDetector {
+    private static final String TAG = "HydrogenTextDetector";
     private final long mNative;
 
     static {
@@ -108,6 +110,9 @@ public class HydrogenTextDetector {
     }
 
     public void detectText() {
+        if(mParams.debug){
+            Log.d(TAG, mParams.toString());
+        }
         nativeDetectText(mNative);
     }
 
@@ -123,6 +128,7 @@ public class HydrogenTextDetector {
 
         public boolean debug;
 
+        // directory to save partial debug image phase
         public String out_dir;
 
         // Edge-based thresholding
@@ -254,6 +260,15 @@ public class HydrogenTextDetector {
             }else{
                 cluster_min_height = 15;
             }
+        }
+
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Parameters:")
+            .append('\n' + "debug: " + debug)
+            .append('\n' + "out_dir: " + out_dir)
+            .append('\n' + "edge_tile_x: " + edge_tile_x);
+            return sb.toString();
         }
     }
 

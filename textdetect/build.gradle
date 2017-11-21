@@ -78,8 +78,8 @@ repositories {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.rmtheis:tess-two:8.0.0'
-//    compile 'com.googlecode.eyesfree:eyes-two:0.9'
-    compile 'it.bluereply.android:utilities:0.9'
+    compile 'com.googlecode.eyesfree:eyes-two:0.9.1'
+    compile 'it.bluereply.android:utilities:1.1b'
 
     androidTestCompile 'junit:junit:4.12'
     testCompile 'junit:junit:4.12'

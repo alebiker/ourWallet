@@ -3,7 +3,6 @@ package it.alborile.mobile.textdetect.service;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 
@@ -15,7 +14,7 @@ import java.util.ListIterator;
 import it.alborile.mobile.ocr.client.Ocr;
 import it.alborile.mobile.textdetect.client.TextDetector;
 
-import com.googlecode.leptonica.android.Constants;
+import com.googlecode.eyesfree.textdetect.HydrogenTextDetector;
 import com.googlecode.leptonica.android.Pix;
 import com.googlecode.leptonica.android.Pixa;
 import com.googlecode.leptonica.android.ReadFile;
@@ -36,7 +35,7 @@ public class TextDetectorTaskProcessor {
     private static final String TAG = "TextDetTaskProcessor";
 
     /** The wrapper for the native Hydrogen instance. */
-    private final HydrogenTextDetector mTextDetector;
+    private final com.googlecode.eyesfree.textdetect.HydrogenTextDetector mTextDetector;
 
     /** List of queued tasks with the current task at the front. */
     private final LinkedList<TextDetectorTask> mTaskQueue;
@@ -46,7 +45,7 @@ public class TextDetectorTaskProcessor {
     /** Object that receives recognition results. */
     private TextDetectorTaskListener mListener;
 
-    private AsyncOcrTask mCurrentTask;
+    private AsyncTextDetectorTask mCurrentTask;
 
     /**
      * Creates a new OCR task processor using the given data path.
@@ -55,7 +54,7 @@ public class TextDetectorTaskProcessor {
      */
     public TextDetectorTaskProcessor() {
         mHandler = new Handler();
-        mTextDetector = new HydrogenTextDetector();
+        mTextDetector = new com.googlecode.eyesfree.textdetect.HydrogenTextDetector();
         mTaskQueue = new LinkedList<TextDetectorTask>();
     }
 
@@ -190,7 +189,10 @@ public class TextDetectorTaskProcessor {
 
     private void nextTask() {
         synchronized (mTaskQueue) {
-            mCurrentTask = new AsyncOcrTask();
+            Log.d(TAG, "Launch next task if any...");
+            if (mTaskQueue.isEmpty() || mCurrentTask != null)
+                return;
+            mCurrentTask = new AsyncTextDetectorTask();
             Utilities.executeAsyncTask(mCurrentTask, mTaskQueue.getFirst());
         }
     }
@@ -210,7 +212,8 @@ public class TextDetectorTaskProcessor {
         }
     }
 
-    private class AsyncOcrTask extends AsyncTask<TextDetectorTask, Integer, ArrayList<Rect>> {
+    private class AsyncTextDetectorTask extends AsyncTask<TextDetectorTask, Integer, ArrayList<Rect>> {
+        private final String TAG = "AsyncTextDetectorTask";
         private int mPid;
         private int mToken;
         private boolean mStopRequested = false;
@@ -220,6 +223,7 @@ public class TextDetectorTaskProcessor {
 
         @Override
         protected ArrayList<Rect> doInBackground(TextDetectorTask... tasks) {
+            Log.d(TAG, "Task " + tasks[0].token + " started");
             if (tasks.length == 0 || tasks[0] == null || isStopRequested()) {
                 return null;
             }
@@ -276,9 +280,11 @@ public class TextDetectorTaskProcessor {
 
         private Pixa processPix(TextDetectorTask task, Pix curr, float[] scale, float[] angle) {
             final TextDetector.Parameters params = task.params;
-            final File outputDir = task.outputDir;
+            final String outputDirPath = params.getVariable(Ocr.Parameters.VAR_OUT_DIR);
             final boolean debug = params.getFlag(Ocr.Parameters.FLAG_DEBUG_MODE);
             final boolean text_detection = params.getFlag(Ocr.Parameters.FLAG_DETECT_TEXT);
+
+            File outputDir = new File(outputDirPath);
             Pixa pixa;
 
             long prev;
@@ -370,12 +376,14 @@ public class TextDetectorTaskProcessor {
         Pixa unsorted, textRegions;
 
         // Transfer parameters to text detector
-        HydrogenTextDetector textDetector = new HydrogenTextDetector();
+        com.googlecode.eyesfree.textdetect.HydrogenTextDetector textDetector = new com.googlecode.eyesfree.textdetect.HydrogenTextDetector();
         HydrogenTextDetector.Parameters hydrogenParams = textDetector.getParameters();
-        hydrogenParams.debug = debug;
+        hydrogenParams.out_dir = params.getVariable(TextDetector.Parameters.VAR_OUT_DIR);
+        hydrogenParams.cluster_min_blobs = 2;
+        hydrogenParams.debug = params.getFlag(Ocr.Parameters.FLAG_DEBUG_MODE);;
         hydrogenParams.skew_enabled = params.getFlag(Ocr.Parameters.FLAG_ALIGN_TEXT);
-        hydrogenParams.setNumDetectionMode(params.getFlag(Ocr.Parameters.FLAG_NUMBER_DETECTION));
-        hydrogenParams.setSmallMode(params.getFlag(Ocr.Parameters.FLAG_SMALL_DETECTION));
+//        hydrogenParams.setNumDetectionMode(params.getFlag(Ocr.Parameters.FLAG_NUMBER_DETECTION));
+//        hydrogenParams.setSmallMode(params.getFlag(Ocr.Parameters.FLAG_SMALL_DETECTION));
 
         textDetector.setParameters(hydrogenParams);
 
@@ -393,10 +401,11 @@ public class TextDetectorTaskProcessor {
         unsorted = textDetector.getTextAreas();
         Log.d(TAG, "HydroTextDet - " + unsorted.size() + " text areas found");
 
-        textRegions = unsorted.sort(Constants.L_SORT_BY_Y, Constants.L_SORT_INCREASING);
-        unsorted.recycle();
+//        textRegions = unsorted.sort(Constants.L_SORT_BY_Y, Constants.L_SORT_INCREASING);
+//        unsorted.recycle();
+        textRegions = unsorted;
         try {
-            textDetector.finalize();
+//            textDetector.finalize();
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
@@ -409,7 +418,6 @@ public class TextDetectorTaskProcessor {
         /* package */final File file;
         /* package */final byte[] data;
         /* package */final TextDetector.Parameters params;
-        /* package */final File outputDir;
 
         public TextDetectorTask(int pid, File file, TextDetector.Parameters params) {
             this(pid, file, null, params);
@@ -425,8 +433,6 @@ public class TextDetectorTaskProcessor {
             this.file = file;
             this.data = data;
             this.params = params;
-            this.outputDir =
-                    Utilities.createPublicDirectory(String.valueOf(System.currentTimeMillis()) + "_td");
         }
     }
 

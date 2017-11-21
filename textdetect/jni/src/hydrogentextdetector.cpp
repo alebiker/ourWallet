@@ -112,10 +112,9 @@ PIXA *HydrogenTextDetector::ExtractTextRegions(PIX *pix8, PIX *edges, NUMA **pco
   l_int32 count = pixaGetCount(conncomp);
   l_uint8 *remove = (l_uint8 *) calloc(count, sizeof(l_uint8));
 
-  if (parameters_.debug) fprintf(stderr, "RemoveInvalidPairs()\n");
-  result = RemoveInvalidPairs(pix8, conncomp, connconfs, remove, parameters_);
-
-  if (parameters_.debug) fprintf(stderr, "Removed %d invalid pairs\n", result);
+//  if (parameters_.debug) fprintf(stderr, "RemoveInvalidPairs()\n");
+ // result = RemoveInvalidPairs(pix8, conncomp, connconfs, remove, parameters_);
+  //if (parameters_.debug) fprintf(stderr, "Removed %d invalid pairs\n", result);
 
   if (parameters_.debug && parameters_.out_dir[0] != '\0' && result > 0) {
     PIX *temp = pixaDisplayRandomCmapFiltered(conncomp, pix8->w, pix8->h, remove);

@@ -94,7 +94,7 @@ abstract public class TextDetectWork implements TextDetectWorkProcessor.Completi
      */
     public void start(){
 
-        Log.d(TAG, mName + " Sending request..");
+        Log.d(TAG, mPath + " Sending request..");
         try {
             if(!setupValidation())
                 throw new IllegalArgumentException("Bad TextDetection work setup!");
@@ -111,7 +111,7 @@ abstract public class TextDetectWork implements TextDetectWorkProcessor.Completi
                     bm = mBitmap;
                 }
                 Bitmap region = Bitmap.createBitmap(bm, mRect.left, mRect.top, mRect.right - mRect.left, mRect.bottom - mRect.top);
-                Log.d(TAG, mName + " enqueued bitmap of " + region.getWidth() + "x" + region.getHeight());
+                Log.d(TAG, mPath + " enqueued bitmap of " + region.getWidth() + "x" + region.getHeight());
                 mParentProcessor.enqueueToService(region, this);
                 region.recycle();
 
