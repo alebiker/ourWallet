@@ -133,6 +133,7 @@ public class TextDetectWorkProcessor implements TextDetector.CompletionCallback 
      * Stopping all pending request not started yet and release it
      */
     synchronized public void stop(){
+        Log.d(TAG, "Stopping..");
         mStatus = Status.STOPPED;
         stopProducerIfNeeded();
 
