@@ -1,10 +1,21 @@
 package it.alborile.mobile.textdetect;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Build;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.uiautomator.UiDevice;
+import android.support.test.uiautomator.UiObject;
+import android.support.test.uiautomator.UiObjectNotFoundException;
+import android.support.test.uiautomator.UiSelector;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,12 +36,17 @@ import static org.junit.Assert.fail;
  * Created by alex on 08/03/16.
  */
 public class TextDetectTest {
+    private static final int MY_PERMISSIONS_REQUEST = 1;
+    private static final String TAG = "TEST";
     private Context mContext;
     private boolean exceptionRaise;
+    private UiDevice mDevice;
 
     @Before
     public void initTargetContext() {
         mContext = InstrumentationRegistry.getTargetContext();
+//        checkPermission();
+        mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
         assertThat(mContext, notNullValue());
     }
 
@@ -47,6 +63,7 @@ public class TextDetectTest {
             params.setFlag(TextDetector.Parameters.FLAG_SMALL_DETECTION, true);
             params.setFlag(TextDetector.Parameters.FLAG_NUMBER_DETECTION, true);
             params.setFlag(TextDetector.Parameters.FLAG_ALIGN_TEXT, true);
+            params.setFlag(TextDetector.Parameters.FLAG_DEBUG_MODE, true);
 
             TextDetectWork nameDetectWork = new TextDetectWork(imgUri, params, inputRect) {
                 @Override
@@ -184,6 +201,46 @@ public class TextDetectTest {
         } catch (Exception e) {
             e.printStackTrace();
             fail();
+        }
+    }
+
+    private boolean checkPermission () {
+        boolean alreadtGrant = true;
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(mContext,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(mContext,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(mContext,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // No explanation needed, we can request the permission.
+            alreadtGrant = false;
+
+            ActivityCompat.requestPermissions((Activity)mContext,
+                    new String[]{
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    },
+                    MY_PERMISSIONS_REQUEST);
+        }
+        return alreadtGrant;
+    }
+
+    private void allowPermissionsIfNeeded()  {
+        if (Build.VERSION.SDK_INT >= 23) {
+            UiObject allowPermissions = mDevice.findObject(new UiSelector().text("Allow"));
+            if (allowPermissions.exists()) {
+                try {
+                    allowPermissions.click();
+                } catch (UiObjectNotFoundException e) {
+                    Log.e(TAG, "There is no permissions dialog to interact with ");
+                }
+            }
         }
     }
 }

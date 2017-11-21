@@ -225,6 +225,7 @@ public class OCRActivity extends AppCompatActivity {
     private void setDefaultParamsConfig(Ocr.Parameters params) {
         params.setLanguage("eng");
         params.setFlag(Ocr.Parameters.FLAG_DEBUG_MODE, true);
+        params.setFlag(Ocr.Parameters.FLAG_DEBUG_MODE, true);
         params.setFlag(Ocr.Parameters.FLAG_SPELLCHECK, false);
         params.setPageSegMode(Ocr.Parameters.PSM_SINGLE_COLUMN);
         params.setVariable(Ocr.Parameters.VAR_CHAR_BLACKLIST, "!@#%^&*()_+=-[]}{n\'\"\\;:|~`/<>?");
@@ -233,11 +234,13 @@ public class OCRActivity extends AppCompatActivity {
     private void setParamsToNameFormat(Ocr.Parameters mParamsName) {
         mParamsName.setVariable(Ocr.Parameters.VAR_CHAR_WHITELIST, ",.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ");
         mParamsName.setPageSegMode(Ocr.Parameters.PSM_SINGLE_LINE);
+        mParamsName.setFlag(Ocr.Parameters.FLAG_DEBUG_MODE, true);
         mParamsName.setFlag(Ocr.Parameters.FLAG_DETECT_TEXT, false);
     }
 
     public void setParamsToPriceFormat(Ocr.Parameters mParamsPrice) {
         mParamsName.setFlag(Ocr.Parameters.FLAG_DETECT_TEXT, false);
+        mParamsPrice.setFlag(Ocr.Parameters.FLAG_DEBUG_MODE, true);
         mParamsPrice.setVariable(Ocr.Parameters.VAR_CHAR_WHITELIST, "0123456789,.");
         mParamsPrice.setVariable(Ocr.Parameters.VAR_CHAR_BLACKLIST, mParamsPrice.getVariable(Ocr.Parameters.VAR_CHAR_BLACKLIST) + " ");
         mParamsPrice.setPageSegMode(Ocr.Parameters.PSM_SINGLE_WORD);

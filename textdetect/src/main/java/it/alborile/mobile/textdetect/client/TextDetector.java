@@ -308,6 +308,7 @@ public class TextDetector {
     private void connectTextDetectionService(final InitCallback init) {
         // Initialize the OCR service, run the callback after the binding is
         // successful
+        Log.d(TAG, "Connecting to TextDetection Service...");
         mServiceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
