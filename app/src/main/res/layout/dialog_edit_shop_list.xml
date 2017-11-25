@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="350dp"
+    android:layout_width="280dp"
     android:layout_height="wrap_content"
     >
     <TextView
@@ -55,10 +55,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:layout_marginBottom="4dp"
+            android:paddingTop="4dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:paddingBottom="4dp"
             android:gravity="center"
             android:textSize="@dimen/dialog_info_text_size"
             android:text="@string/dialog_user_qty"
@@ -66,34 +66,63 @@
             />
 
         <NumberPicker
-        android:id="@+id/dialog_n_picker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+            android:id="@+id/dialog_n_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:layout_gravity="center"
         />
         </LinearLayout>
 
-
-
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center">
-        <TimePicker
-            android:id="@+id/dialog_time_picker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="4dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="4dp"
+                android:gravity="center"
+                android:textSize="@dimen/dialog_info_text_size"
+                android:text="@string/dialog_date"
+                android:fontFamily="sans-serif"
+                />
 
-            </TimePicker>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/date_value_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="4dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:paddingBottom="4dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/dialog_value_text_size"
+                    android:text="19/03/2017"
+                    android:clickable="true"
+                    android:fontFamily="sans-serif"
+                    />
+
+            </RelativeLayout>
+
+        <!--<TimePicker-->
+            <!--android:id="@+id/dialog_time_picker"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--&gt;-->
+
+            <!--</TimePicker>-->
         </LinearLayout>
     </LinearLayout>
-    <CalendarView
-        android:id="@+id/dialog_calendarView"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_gravity="center_horizontal" />
 
 
 </LinearLayout>

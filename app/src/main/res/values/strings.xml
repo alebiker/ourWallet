@@ -16,7 +16,9 @@
 
     <!-- dialog string -->
     <string name="dialog_qty">Quantity</string>
-    <string name="dialog_user_qty">N. Users</string>
+    <string name="dialog_user_qty">People Number</string>
+    <string name="dialog_set_date">Set Date</string>
+    <string name="dialog_date">Date</string>
     <string name="add_user">Add User</string>
     <string name="edit_user">Edit User</string>
     <string name="add_item">Add Item</string>
