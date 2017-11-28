@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="col_backgorund">#110a0a0a</color>
+    <color name="col_backgorund">#dededb</color>
     <color name="material_deep_teal_100">#b2dfdb</color>
 
 </resources>
