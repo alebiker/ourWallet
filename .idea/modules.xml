@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/ourWallet.iml" filepath="$PROJECT_DIR$/ourWallet.iml" />
-      <module fileurl="file://$PROJECT_DIR$/textdetect/textdetect.iml" filepath="$PROJECT_DIR$/textdetect/textdetect.iml" />
     </modules>
   </component>
 </project>
