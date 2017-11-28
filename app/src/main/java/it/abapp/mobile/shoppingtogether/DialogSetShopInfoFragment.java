@@ -7,12 +7,12 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.NumberPicker;
-import android.widget.TimePicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -22,10 +22,10 @@ import it.abapp.mobile.shoppingtogether.model.ShopList;
  * Created by Alessandro on 13/04/2015.
  */
 public class DialogSetShopInfoFragment extends DialogFragment {
-    Date date;
     String owner;
     float amount;
-    int  n_user;
+    int n_user;
+    private Date date;
     private boolean isNewShopList = true;
 
     public static DialogSetShopInfoFragment newInstance(ShopList shopList) {
@@ -48,17 +48,20 @@ public class DialogSetShopInfoFragment extends DialogFragment {
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
+        date = new Date();
+
         // retrieve the lectures for dialog population
-        Calendar c = Calendar.getInstance();
         Bundle args = getArguments();
         if(args != null){
             isNewShopList = false;
             date = (Date)args.getSerializable("date");
-            c.setTime(date);
             owner = args.getString("owner");
             amount = args.getFloat("amount");
             n_user = args.getInt("n_users");
         }
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
 
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
@@ -68,8 +71,15 @@ public class DialogSetShopInfoFragment extends DialogFragment {
         final EditText viewOwner = (EditText)dialog_root.findViewById(R.id.dialog_owner);
         final EditText viewAmount = (EditText)dialog_root.findViewById(R.id.dialog_amount);
         final NumberPicker numPicker = (NumberPicker)dialog_root.findViewById(R.id.dialog_n_picker);
-        final TimePicker timePicker = (TimePicker)dialog_root.findViewById(R.id.dialog_time_picker);
-        final CalendarView viewCalendar = (CalendarView)dialog_root.findViewById(R.id.dialog_calendarView);
+        final TextView dateTV = (TextView) dialog_root.findViewById(R.id.dialog_date_value_tv);
+//        final CalendarView viewCalendar = (CalendarView)dialog_root.findViewById(R.id.dialog_calendarView);
+
+        dateTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO show up calaendar
+            }
+        });
 
         viewOwner.setText(owner);
         viewAmount.setText("");
@@ -78,9 +88,7 @@ public class DialogSetShopInfoFragment extends DialogFragment {
         numPicker.setMinValue(0);
         numPicker.setMaxValue(100);
         numPicker.setValue(n_user);
-        timePicker.setCurrentHour(c.get(Calendar.HOUR_OF_DAY));
-        timePicker.setCurrentMinute(c.get(Calendar.MINUTE));
-        viewCalendar.setDate(c.getTimeInMillis(),true,true);
+        dateTV.setText(SimpleDateFormat.getDateInstance().format(c.getTime()));
 
 
         builder.setView(dialog_root)
@@ -90,18 +98,16 @@ public class DialogSetShopInfoFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         // prepare return bundle
-                        CalendarView cv = (CalendarView)dialog_root.findViewById(R.id.dialog_calendarView);
-                        TimePicker tp = (TimePicker)dialog_root.findViewById(R.id.dialog_time_picker);
 
                         String owner = viewOwner.getText().toString();
                         int n_user = numPicker.getValue();
                         String innerAmount = viewAmount.getText().toString();
 
                         Calendar c = Calendar.getInstance();
-                        c.setTime(new Date(viewCalendar.getDate()));
-                        c.set(Calendar.HOUR_OF_DAY,tp.getCurrentHour());
-                        c.set(Calendar.MINUTE,tp.getCurrentMinute());
-                        Date selected_date = c.getTime();
+                        c.setTime(date);
+//                        c.set(Calendar.HOUR_OF_DAY,tp.getCurrentHour());
+//                        c.set(Calendar.MINUTE,tp.getCurrentMinute());
+                        Date selected_date = date;
 
                         if(innerAmount.isEmpty()){
                             String toast_info = getString(R.string.void_amount);
@@ -112,13 +118,9 @@ public class DialogSetShopInfoFragment extends DialogFragment {
                         }
 
                         float amount = Float.valueOf(innerAmount);
-                        int sel_h = tp.getCurrentHour();
-                        int sel_m = tp.getCurrentMinute();
 
 
-                        if(owner.isEmpty() || amount <= 0)
-
-                        {
+                        if(owner.isEmpty() || amount <= 0) {
                             String toast_info = getString(R.string.void_shop_list);
                             Toast.makeText(getActivity(), toast_info,
                                     Toast.LENGTH_SHORT).show();
@@ -127,14 +129,13 @@ public class DialogSetShopInfoFragment extends DialogFragment {
                         }
 
                         // call the interface method
-                        ((EditShopListActivity)getActivity()).updateMainInfo(selected_date,n_user,amount,owner);
+                        ((EditShopListActivity)getActivity()).updateMainInfo(selected_date, n_user, amount, owner);
+
                         DialogSetShopInfoFragment.this.getDialog().dismiss();
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if(isNewShopList)
-                            ((EditShopListActivity)getActivity()).finish();
                         DialogSetShopInfoFragment.this.getDialog().cancel();
                     }
                 });
@@ -142,4 +143,11 @@ public class DialogSetShopInfoFragment extends DialogFragment {
         return builder.create();
     }
 
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        // kill activity if new
+        if(isNewShopList)
+            ((EditShopListActivity)getActivity()).finish();
+        DialogSetShopInfoFragment.this.getDialog().cancel();
+    }
 }

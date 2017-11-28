@@ -25,6 +25,8 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
+        android:inputType="textPersonName"
+        android:maxLines="1"
         android:hint="Owner"
         android:textSize="@dimen/dialog_info_text_size"
         android:text="By Malnati"
@@ -34,12 +36,12 @@
         android:id="@+id/dialog_amount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
         android:layout_marginTop="4dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
-        android:hint="Amount"
+        android:inputType="numberDecimal"
+        android:hint="Amount (€)"
         android:textSize="@dimen/dialog_info_text_size"
         android:text="54.13"
         android:fontFamily="sans-serif"
@@ -71,6 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_gravity="center"
+
         />
         </LinearLayout>
 
@@ -98,7 +101,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center">
                 <TextView
-                    android:id="@+id/date_value_tv"
+                    android:id="@+id/dialog_date_value_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="4dp"

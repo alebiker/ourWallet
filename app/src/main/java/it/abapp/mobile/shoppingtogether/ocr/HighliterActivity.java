@@ -26,7 +26,6 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.TextView;
 
-import it.alborile.mobile.ocr.client.Ocr;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,9 +38,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import it.abapp.mobile.shoppingtogether.R;
-import it.alborile.mobile.textdetect.client.TextDetectWork;
-import it.alborile.mobile.textdetect.client.TextDetectWorkProcessor;
-import it.alborile.mobile.textdetect.client.TextDetector;
+
+import it.bluereply.android.ocr.client.Ocr;
+import it.bluereply.android.textdetect.client.TextDetectWork;
+import it.bluereply.android.textdetect.client.TextDetectWorkProcessor;
+import it.bluereply.android.textdetect.client.TextDetector;
+
 import com.albori.android.utilities.Utilities;
 
 /* Activity that provid to hilight pieces of the paper
@@ -73,7 +75,7 @@ public class HighliterActivity extends AppCompatActivity {
     private boolean mInPriceSelection;
     private boolean mInItemSelection;
     private boolean mAlreadyEdited;
-    private TextDetectWorkProcessor mTextDetector;
+    private TextDetectWorkProcessor mTextDetProcessor;
     private TextDetectionAsyncTask mTextDetectAsyncTask;
     private boolean isTextDetectionFinish;
     private int mTextRegionDetected;
@@ -335,7 +337,7 @@ public class HighliterActivity extends AppCompatActivity {
 
     /**  */
     private void detectText() {
-        mTextDetector = new TextDetectWorkProcessor(this);
+        mTextDetProcessor = new TextDetectWorkProcessor(this);
         mTextDetectAsyncTask = new TextDetectionAsyncTask();
 
         // Directory creation
@@ -365,6 +367,7 @@ public class HighliterActivity extends AppCompatActivity {
             if (!dirFullPath.isEmpty())
                 nameDetectParams.setVariable(TextDetector.Parameters.VAR_OUT_DIR, dirFullPath);
             nameDetectParams.setFlag(TextDetector.Parameters.FLAG_DEBUG_MODE, true);
+            nameDetectParams.getHydroParam().debug = true;
 //            nameDetectParams.setFlag(TextDetector.Parameters.FLAG_ALIGN_TEXT, true);
 //            nameDetectParams.setFlag(TextDetector.Parameters.FLAG_NUMBER_DETECTION, true);
 //            nameDetectParams.setFlag(TextDetector.Parameters.FLAG_SMALL_DETECTION, true);
@@ -382,7 +385,7 @@ public class HighliterActivity extends AppCompatActivity {
                     }
                 };
 
-                mTextDetector.enqueue(nameDetectWork);
+                mTextDetProcessor.enqueue(nameDetectWork);
             }
 
         }
@@ -392,9 +395,10 @@ public class HighliterActivity extends AppCompatActivity {
             if (!dirFullPath.isEmpty())
                 priceDetectParams.setVariable(TextDetector.Parameters.VAR_OUT_DIR, dirFullPath);
             priceDetectParams.setFlag(TextDetector.Parameters.FLAG_DEBUG_MODE, true);
+            priceDetectParams.getHydroParam().debug = true;
 //            priceDetectParams.setFlag(TextDetector.Parameters.FLAG_ALIGN_TEXT, true);
-//            priceDetectParams.setFlag(TextDetector.Parameters.FLAG_NUMBER_DETECTION, true);
-//            priceDetectParams.setFlag(TextDetector.Parameters.FLAG_SMALL_DETECTION, true);
+            priceDetectParams.setFlag(TextDetector.Parameters.FLAG_NUMBER_DETECTION, true);
+            priceDetectParams.setFlag(TextDetector.Parameters.FLAG_SMALL_DETECTION, true);
 
             for(Rect rect : priceRects){
                 TextDetectWork priceDetectWork = new TextDetectWork(this.orgImgUri, priceDetectParams, rect) {
@@ -409,14 +413,13 @@ public class HighliterActivity extends AppCompatActivity {
                     }
                 };
 
-                mTextDetector.enqueue(priceDetectWork);
+                mTextDetProcessor.enqueue(priceDetectWork);
             }
-
         }
 
         //TODO start only if some task enqueued
-        Utilities.executeAsyncTask(mTextDetectAsyncTask, mTextDetector);
-//        mTextDetectAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, mTextDetector);
+        Utilities.executeAsyncTask(mTextDetectAsyncTask, mTextDetProcessor);
+//        mTextDetectAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, mTextDetProcessor);
     }
 
     /** Add full-res rectangle as detected rect */
@@ -481,7 +484,7 @@ public class HighliterActivity extends AppCompatActivity {
 
         //Ver.2 eyes-free
         Ocr.Parameters params = new Ocr.Parameters();
-        params.setLanguage("eng");
+        params.setLanguage("ita");
         params.setFlag(Ocr.Parameters.FLAG_DETECT_TEXT, false);
         params.setFlag(Ocr.Parameters.FLAG_SPELLCHECK, false);
         detectIntent.putExtra(Intents.Recognize.EXTRA_INPUT, outPath);
@@ -803,7 +806,7 @@ public class HighliterActivity extends AppCompatActivity {
 
             // wait until every request has been replied
             try {
-                while (processor.getStatus() != TextDetectWorkProcessor.Status.IDLE) {
+                while (processor.getStatus().equals(TextDetectWorkProcessor.Status.BUSY) || processor.getWorksStarted() + processor.getPendingWork() - processor.getWorksCompleted() > 0) {
                     synchronized (processor) {
                         processor.wait();
                     }

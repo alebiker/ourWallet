@@ -44,10 +44,11 @@ import java.util.Set;
 import it.abapp.mobile.shoppingtogether.R;
 import it.abapp.mobile.shoppingtogether.model.ShopListEntry;
 import it.abapp.mobile.shoppingtogether.Utils;
-import it.alborile.mobile.ocr.client.OCRWork;
-import it.alborile.mobile.ocr.client.OCRWorkProcessor;
-import it.alborile.mobile.ocr.client.OcrResult;
-import it.alborile.mobile.ocr.client.Ocr;
+import it.bluereply.android.ocr.client.OCRWork;
+import it.bluereply.android.ocr.client.OCRWorkProcessor;
+import it.bluereply.android.ocr.client.OcrResult;
+import it.bluereply.android.ocr.client.Ocr;
+import it.bluereply.android.textdetect.client.TextDetector;
 
 
 public class OCRActivity extends AppCompatActivity {
@@ -63,6 +64,7 @@ public class OCRActivity extends AppCompatActivity {
 
     private List<Ocr.Job> mJobs;
     private File mFile;
+    private String dirFullPath;
     private Ocr.Parameters mParams;
     private ItemListAdapter mlvAdapter;
     private ListView mlv;
@@ -89,6 +91,15 @@ public class OCRActivity extends AppCompatActivity {
 
         if (getIntent().getSerializableExtra(Intents.Recognize.EXTRA_RECTS) != null) {
             itemsRects = (HashMap<Rect,Rect>) getIntent().getSerializableExtra(Intents.Recognize.EXTRA_RECTS);
+        }
+
+
+        // Directory creation
+        dirFullPath = "";
+        String taskDirectory = "ourwallet/ocr_" + Long.toString(System.currentTimeMillis());
+        File dir;
+        if((dir = Utilities.createDirectory(taskDirectory, Utilities.RESOURCES_LOCATION.EXTERNAL)).exists()){
+            dirFullPath =  dir.getPath();
         }
 
         // retrive or default OCR params
@@ -223,7 +234,7 @@ public class OCRActivity extends AppCompatActivity {
     }
 
     private void setDefaultParamsConfig(Ocr.Parameters params) {
-        params.setLanguage("eng");
+        params.setLanguage("ita");
         params.setFlag(Ocr.Parameters.FLAG_DEBUG_MODE, true);
         params.setFlag(Ocr.Parameters.FLAG_SPELLCHECK, false);
         params.setPageSegMode(Ocr.Parameters.PSM_SINGLE_COLUMN);
@@ -233,28 +244,33 @@ public class OCRActivity extends AppCompatActivity {
     private void setParamsToNameFormat(Ocr.Parameters mParamsName) {
         mParamsName.setVariable(Ocr.Parameters.VAR_CHAR_WHITELIST, ",.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ");
         mParamsName.setPageSegMode(Ocr.Parameters.PSM_SINGLE_LINE);
+        if (!dirFullPath.isEmpty()) {
+            mParamsName.setVariable(TextDetector.Parameters.VAR_OUT_DIR, dirFullPath);
+        }
         mParamsName.setFlag(Ocr.Parameters.FLAG_DETECT_TEXT, false);
     }
 
     public void setParamsToPriceFormat(Ocr.Parameters mParamsPrice) {
-        mParamsName.setFlag(Ocr.Parameters.FLAG_DETECT_TEXT, false);
+        mParamsPrice.setFlag(Ocr.Parameters.FLAG_DETECT_TEXT, false);
+        if (!dirFullPath.isEmpty())
+            mParamsPrice.setVariable(TextDetector.Parameters.VAR_OUT_DIR, dirFullPath);
         mParamsPrice.setVariable(Ocr.Parameters.VAR_CHAR_WHITELIST, "0123456789,.");
-        mParamsPrice.setVariable(Ocr.Parameters.VAR_CHAR_BLACKLIST, mParamsPrice.getVariable(Ocr.Parameters.VAR_CHAR_BLACKLIST) + " ");
+        mParamsPrice.setVariable(Ocr.Parameters.VAR_CHAR_BLACKLIST, mParamsName.getVariable(Ocr.Parameters.VAR_CHAR_BLACKLIST) + " ");
         mParamsPrice.setPageSegMode(Ocr.Parameters.PSM_SINGLE_WORD);
     }
 
     private void setupOCRService() {
         try {
             Bitmap bmp = null;
-            if (!mItemMap.getItems().isEmpty())
-                bmp = Utilities.loadImage(mImgPath);
+//            if (!mItemMap.getItems().isEmpty())
+//                bmp = Utilities.loadImage(mImgPath);
 
-            OCRWork ocrNameWork = new OCRWork(bmp, mParamsName, mItemMap.getNameRects()) {
+            OCRWork ocrNameWork = new OCRWork(mImgPath, mParamsName, mItemMap.getNameRects()) {
                 @Override
                 public void onProcessResult(OcrResult result, Rect rect) {
                     final ShopListEntry item = mItemMap.getItemByName(rect);
                     final OcrResult finalResult = result;
-                    Log.d("ITEM", "Found name:" + finalResult.getString());
+                    Log.d("ITEM", "Found name: " + finalResult.getString());
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -280,7 +296,7 @@ public class OCRActivity extends AppCompatActivity {
             mWorkProcessor.enqueue(ocrNameWork);
 
 
-            OCRWork ocrPriceWork = new OCRWork(bmp, mParamsPrice, mItemMap.getPriceRects()) {
+            OCRWork ocrPriceWork = new OCRWork(mImgPath, mParamsPrice, mItemMap.getPriceRects()) {
                 @Override
                 public void onProcessResult(OcrResult result, Rect rect) {
                     final ShopListEntry item = mItemMap.getItemByPrice(rect);

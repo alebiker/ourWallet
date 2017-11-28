@@ -52,9 +52,9 @@
     <string name="no">No</string>
     <string name="paid">Paid</string>
     <string name="shoplist_save_done">Shoplist saved correctly</string>
-    <string name="position_save_error">Error ocurred during saving</string>
-    <string name="loading">Loading...</string>
-    <string name="action_scan_w_camera">Aquire by camera</string>
+    <string name="position_save_error">Error occurred during saving</string>
+    <string name="loading">Loading&#8230;</string>
+    <string name="action_scan_w_camera">Acquire from receipt</string>
     <string name="title_activity_highliter">HighliterActivity</string>
     <string name="action_add_region">Add Region</string>
     <string name="action_sel_price">Select Price</string>
@@ -64,13 +64,14 @@
     <string name="ocr_processing_error">Error occurs in OCR processing</string>
     <string name="action_import">Import</string>
     <string name="action_sel_name">Select Name</string>
-    <string name="ocr_processing_loading">Waiting OCR recognition...</string>
+    <string name="ocr_processing_loading">Waiting OCR recognition&#8230;</string>
     <string name="action_pan_mode">Pan Mode</string>
     <string name="action_start_ocr">OCR</string>
-    <string name="text_detection_processing_loading">Text detection...</string>
+    <string name="text_detection_processing_loading">Text detection&#8230;</string>
+    <string name="text_app_initialization">Initialization&#8230;</string>
     <string name="action_detect_text">Detect Text</string>
     <string name="finger_selection_hint">Use your finger to select items</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="ocr_activity_bad_input_dialog_til">ERROR</string>
     <string name="ocr_activity_bad_input_dialog_msg">Cannot start OCR!</string>
 </resources>

@@ -3,6 +3,7 @@ package it.abapp.mobile.shoppingtogether;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,6 +38,7 @@ import com.albori.android.utilities.Utilities;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -55,11 +57,13 @@ import it.abapp.mobile.shoppingtogether.ocr.OCRActivity;
 public class EditShopListActivity extends AppCompatActivity {
 
 
+    private static final String TAG = "EditShopListActivity";
     static final int SELECT_MAIN_INFO_REQUEST = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
     static final int REQUEST_RECOGNIZE_OCR = 2;
     private static final int HIGHLITER_ITEMS = 3;
-    private static final String TAG = "EditShopListActivity";
+
+    private static final String traineddataPath = "tessdata/ita.traineddata";
 
     private int defaultTextViewColor;
 
@@ -72,6 +76,8 @@ public class EditShopListActivity extends AppCompatActivity {
     private ViewGroup header;
     private String mNewCameraPhotoPath;
     private boolean changed = false;
+    private boolean isShopListInitialized = false;
+    private String mCurrentPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,7 +156,7 @@ public class EditShopListActivity extends AppCompatActivity {
                 showItemDialog();
                 return true;
             case R.id.action_take_photo:
-                dispatchTakePictureIntent();
+                initImageProcessing();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -317,6 +323,7 @@ public class EditShopListActivity extends AppCompatActivity {
 
         refreshTable(null);
         refreshSummary();
+        this.isShopListInitialized = true;
     }
 
     public void addUser(String name){
@@ -681,6 +688,16 @@ public class EditShopListActivity extends AppCompatActivity {
         DialogEditItemShopListFragment newFragment = DialogEditItemShopListFragment.newInstance((ShopListEntry)(v.getTag()));
         newFragment.show(fm, "dialog");
     }
+
+    private boolean checkAssets() {
+        if(!Utilities.openFile(traineddataPath, Utilities.RESOURCES_LOCATION.EXTERNAL).exists()){
+            AsyncTask<String, Void, Boolean> at = new CopyTessdataAsyncTask();
+            at.execute(traineddataPath);
+            return false;
+        }else {
+            return true;
+        }
+    }
 /*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -784,72 +801,95 @@ public class EditShopListActivity extends AppCompatActivity {
         newFragment.show(fm, "dialog");
     }
 
-
+    private void initImageProcessing(){
+        if(checkAssets()){
+            dispatchTakePictureIntent();
+        }
+    }
 
     private void dispatchTakePictureIntent() {
 
-        /*
-        //Ver.1
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = Utils.createPrivateImageFile();
-                mNewCameraPhotoPath = photoFile.getAbsolutePath();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
 
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(photoFile));
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-            }
-        }
+//        //Ver.1
+//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        // Ensure that there's a camera activity to handle the intent
+//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+//            // Create the File where the photo should go
+//            File photoFile = null;
+//            try {
+//                photoFile = Utils.createPrivateImageFile();
+//                mNewCameraPhotoPath = photoFile.getAbsolutePath();
+//            } catch (IOException ex) {
+//                // Error occurred while creating the File
+//
+//            }
+//            // Continue only if the File was successfully created
+//            if (photoFile != null) {
+//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+//                        Uri.fromFile(photoFile));
+//                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+//            }
+//        }
 
-*/
+
 
         //Ver.2 Multi Intent
 
         // Create the File where the photo should go
-        File photoFile = null;
+        Uri newPhotoUri = null;
+        //photoFile = Utils.createPrivateImageFile();
+        String timeStamp = Long.toString(System.currentTimeMillis());
+//            newPhotoUri = Utilities.getCaptureImageOutputUri("ocrCf_"+timeStamp, "jpg");
+        File imgFile = null;
         try {
-            //photoFile = Utils.createPrivateImageFile();
-            String timeStamp = new SimpleDateFormat("MM_dd_HH_mm").format(new java.util.Date());
-            photoFile = Utilities.createPublicImageFile("shoplist_"+timeStamp, "jpg");
-            mNewCameraPhotoPath = photoFile.getAbsolutePath();
-        } catch (IOException ex) {
-            // Error occurred while creating the File
-            Log.e(TAG, "Cannot create image file!");
-            ex.printStackTrace();
-            return;
+            imgFile = Utilities.createPublicImageFile("shopList_" + timeStamp, "jpg");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        final List<Intent> intents = new ArrayList<>();
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = imgFile.getAbsolutePath();
+
+//        File newFile2 = Utilities.openCreateFile("Cf_" + timeStamp + ".jpg", Utilities.RESOURCES_LOCATION.EXTERNAL);
+        newPhotoUri = Utilities.File2ContentUri(imgFile, BuildConfig.APPLICATION_ID + ".provider");
+        mNewCameraPhotoPath = newPhotoUri.getPath();
+
+        final List<Intent> allIntents = new ArrayList<>();
 
         // Camera.
-        final List<Intent> cameraIntents = new ArrayList<Intent>();
-        final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        final PackageManager packageManager = getPackageManager();
-        final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
-        for(ResolveInfo res : listCam) {
-            final String packageName = res.activityInfo.packageName;
-            final Intent intent = new Intent(captureIntent);
-            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
-            intent.setPackage(packageName);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
-            cameraIntents.add(intent);
-        }
+        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        intents.addAll(cameraIntents);
+        i.putExtra(MediaStore.EXTRA_OUTPUT, newPhotoUri);
+
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
+            i.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        }
+        else if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN) {
+            ClipData clip=
+                    ClipData.newUri(getContentResolver(), "A photo", newPhotoUri);
+
+            i.setClipData(clip);
+            i.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        }
+        else {
+            List<ResolveInfo> resInfoList=
+                    getPackageManager()
+                            .queryIntentActivities(i, PackageManager.MATCH_DEFAULT_ONLY);
+
+            for (ResolveInfo resolveInfo : resInfoList) {
+                String packageName = resolveInfo.activityInfo.packageName;
+                grantUriPermission(packageName, newPhotoUri,
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            }
+        }
+        allIntents.add(i);
 
         // Gallery.
         final Intent galleryIntent = new Intent();
         galleryIntent.setType("image/*");
         galleryIntent.setAction(Intent.ACTION_PICK);
+
+
         //intents.add(galleryIntent);
 
         /*
@@ -863,11 +903,94 @@ public class EditShopListActivity extends AppCompatActivity {
         final Intent chooserIntent = Intent.createChooser(galleryIntent, "Select Source");
 
         // Add the camera options.
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intents.toArray(new Parcelable[intents.size()]));
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, allIntents.toArray(new Parcelable[allIntents.size()]));
 
         startActivityForResult(chooserIntent, REQUEST_TAKE_PHOTO);
 
     }
+
+//    private void dispatchTakePictureIntent() {
+//
+//        /*
+//        //Ver.1
+//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        // Ensure that there's a camera activity to handle the intent
+//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+//            // Create the File where the photo should go
+//            File photoFile = null;
+//            try {
+//                photoFile = Utils.createPrivateImageFile();
+//                mNewCameraPhotoPath = photoFile.getAbsolutePath();
+//            } catch (IOException ex) {
+//                // Error occurred while creating the File
+//
+//            }
+//            // Continue only if the File was successfully created
+//            if (photoFile != null) {
+//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+//                        Uri.fromFile(photoFile));
+//                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+//            }
+//        }
+//
+//*/
+//
+//        //Ver.2 Multi Intent
+//
+//        // Create the File where the photo should go
+//        File photoFile = null;
+//        try {
+//            //photoFile = Utils.createPrivateImageFile();
+//            String timeStamp = new SimpleDateFormat("MM_dd_HH_mm").format(new java.util.Date());
+//            photoFile = Utilities.createPublicImageFile("shoplist_"+timeStamp, "jpg");
+//            mNewCameraPhotoPath = photoFile.getAbsolutePath();
+//        } catch (IOException ex) {
+//            // Error occurred while creating the File
+//            Log.e(TAG, "Cannot create image file!");
+//            ex.printStackTrace();
+//            return;
+//        }
+//
+//        final List<Intent> intents = new ArrayList<>();
+//
+//        // Camera.
+//        final List<Intent> cameraIntents = new ArrayList<Intent>();
+//        final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//        final PackageManager packageManager = getPackageManager();
+//        final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
+//        for(ResolveInfo res : listCam) {
+//            final String packageName = res.activityInfo.packageName;
+//            final Intent intent = new Intent(captureIntent);
+//            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+//            intent.setPackage(packageName);
+//            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+//            cameraIntents.add(intent);
+//        }
+//
+//        intents.addAll(cameraIntents);
+//
+//        // Gallery.
+//        final Intent galleryIntent = new Intent();
+//        galleryIntent.setType("image/*");
+//        galleryIntent.setAction(Intent.ACTION_PICK);
+//        //intents.add(galleryIntent);
+//
+//        /*
+//        // Filesystem.
+//        final Intent filesystemIntent = new Intent();
+//        filesystemIntent.setType("image/*");
+//        filesystemIntent.setAction(Intent.ACTION_GET_CONTENT);
+//        */
+//
+//        // Chooser of filesystem options.
+//        final Intent chooserIntent = Intent.createChooser(galleryIntent, "Select Source");
+//
+//        // Add the camera options.
+//        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intents.toArray(new Parcelable[intents.size()]));
+//
+//        startActivityForResult(chooserIntent, REQUEST_TAKE_PHOTO);
+//
+//    }
 
     private ArrayList<View> getAllChildren(View v) {
 
@@ -964,6 +1087,43 @@ public class EditShopListActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             showShopList();
+            dialog.dismiss();
+        }
+    }
+
+    private class CopyTessdataAsyncTask extends AsyncTask<String, Void, Boolean> {
+        ProgressDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.i(TAG, "Starting initializing assets..");
+            dialog = ProgressDialog.show(EditShopListActivity.this, null, getResources().getString(R.string.text_app_initialization), true, false);
+        }
+        @Override
+        protected Boolean doInBackground(String[] tessPaths) {
+            File file = null;
+            String tessPath = tessPaths[0];
+            try {
+                InputStream assetsPath = getAssets().open(tessPath);
+                assetsPath.available();
+                file = Utilities.writeFileFromInputStream(assetsPath, Utilities.openCreateFile(tessPath, Utilities.RESOURCES_LOCATION.EXTERNAL));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return file == null ? false : file.exists();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean completed){
+            String text;
+            if (completed){
+                text = "Initialization completed!";
+                dispatchTakePictureIntent();
+            }else{
+                text = "Initialization error!";
+            }
+            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
             dialog.dismiss();
         }
     }

@@ -21,8 +21,10 @@ public class MyApplication extends Application {
         Thread.setDefaultUncaughtExceptionHandler( new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread thread, Throwable exception) {
-                android.os.Process.killProcess(android.os.Process.myPid());
-                System.exit(0);
+                //TODO shows crash app dialog
+                exception.printStackTrace();
+//                android.os.Process.killProcess(android.os.Process.myPid());
+//                System.exit(0);
             }
         } );
 

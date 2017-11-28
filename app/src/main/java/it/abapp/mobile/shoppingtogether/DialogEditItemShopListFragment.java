@@ -55,17 +55,15 @@ public class DialogEditItemShopListFragment extends DialogFragment {
         final EditText viewPrice = (EditText)dialog_root.findViewById(R.id.dialog_item_price);
         final NumberPicker pickerQty = (NumberPicker)dialog_root.findViewById(R.id.dialog_item_qty);
 
+        pickerQty.setMinValue(1);
+        pickerQty.setMaxValue(999);
+
         if (item == null) {
             viewName.setText("");
             viewPrice.setText("");
-            pickerQty.setMinValue(1);
-            pickerQty.setMaxValue(999);
-
         }else{
             viewName.setText(item.getName());
             viewPrice.setText(Float.toString(item.getPrice()));
-            pickerQty.setMinValue(1);
-            pickerQty.setMaxValue(999);
             pickerQty.setValue(item.getQty());
         }
 

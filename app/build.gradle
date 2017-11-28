@@ -35,8 +35,18 @@ dependencies {
 
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'it.bluereply.android:utilities:1.1b'
-    compile project(':textdetect')
+
+    compile 'com.rmtheis:tess-two:8.0.0'
+    compile 'com.googlecode.eyesfree:eyes-two:0.9.4'
+
+    compile 'it.bluereply.android:hydrocr:0.9.5'
+//    compile 'com.journeyapps:zxing-android-embedded:3.5.0'
+
+    compile 'it.bluereply.android:utilities:1.1.1'
+
+
+//    compile 'it.bluereply.android:utilities:1.1b'
+//    compile project(':textdetect')
 
     testCompile 'junit:junit:4.12'
     androidTestCompile 'junit:junit:4.12'
